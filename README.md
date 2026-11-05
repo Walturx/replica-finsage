@@ -43,3 +43,14 @@ uv run python -m finsage_replica.corpus.financebench --dest ../data/financebench
 ```
 
 Re-running skips PDFs already on disk.
+
+## Preprocessing (FFP)
+
+Parse every PDF to per-page markdown, split it into chunks of at most 256 tokens (`o200k_base`), embed them with BGE-M3 on the GPU and drop near duplicates (cosine >= 0.98, first occurrence kept):
+
+```bash
+cd backend
+uv run python -m finsage_replica.preprocessing.pipeline --workers 10
+```
+
+Output goes to `data/processed/` (`pages/`, `chunks/`, `embeddings/`, `stats.json`). Each stage caches per document, so an interrupted run resumes. Chunk page indexes are 0-based, matching FinanceBench `evidence_page_num`.
