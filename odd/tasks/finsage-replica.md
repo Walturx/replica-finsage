@@ -16,7 +16,7 @@ Branch: `feat/finsage-replica` · Delivery strategy: `ask-on-risk` (local repo, 
 
 | ID | Specs | Task | Route | Status | Evidence |
 |---|---|---|---|---|---|
-| T1 | S1, S5 | Repo, Python 3.12 env, package skeleton, FinanceBench download script | inline | code done, corpus download awaiting user OK | RED: ModuleNotFoundError. GREEN: 4 passed (pytest) |
+| T1 | S1, S5 | Repo, Python 3.12 env, package skeleton, FinanceBench download script | inline | done | RED: ModuleNotFoundError. GREEN: 4 passed (pytest). Commit 35136e5 |
 | T2 | S1, S6 | FFP: PDF to 256-token chunks, dedup, section summaries, cached on disk | inline | pending | |
 | T3 | S1, S4 | Indexes and MPR retrieval, experiment A | inline | pending | |
 | T4 | S1, S2 | Reranker and answer generation | inline | pending | |
@@ -32,4 +32,5 @@ Branch: `feat/finsage-replica` · Delivery strategy: `ask-on-risk` (local repo, 
 - **L4 (2026-11-05, user):** "Vamos a hacer front end  o algun modelo de machine learning ahi quiero que me expliques que vamos a hacer si me puedes hacer un artefacto para entenderlo seria mejor". Explainer published: https://claude.ai/artifact/MM2ofobmiqFR7ZiurrLQus
 - **L5 (2026-11-05, user):** "En el scope hay que generar un front end tdv hay tiempo de sobrea". Front end added as T6.
 - **L6 (2026-11-05, user):** "FastAPI + React". Repo created at `C:\Users\USER\Downloads\finsage-replica` (outside Google Drive). Engram mirror pending: Engram server failed to connect this session.
-- **L7 (2026-11-05, T1):** uv project on Python 3.12, package `finsage_replica` with `corpus.financebench` (questions + only referenced PDFs, atomic writes, skips existing). Writing `.env.example` was denied by the permission settings, so the env vars are documented in README instead. Heavy ML dependencies (torch for CUDA 12.8, FlagEmbedding, faiss) are deferred to T2/T3. Next: run the corpus download once the user approves it (84 PDFs, about 158 MB).
+- **L7 (2026-11-05, T1):** uv project on Python 3.12, package `finsage_replica` with `corpus.financebench` (questions + only referenced PDFs, atomic writes, skips existing). Writing `.env.example` was denied by the permission settings, so the env vars are documented in README instead. Heavy ML dependencies (torch for CUDA 12.8, FlagEmbedding, faiss) are deferred to T2/T3. Next: run the corpus download once the user approves it (84 PDFs, about 158 MB). RDD assess on 35136e5 (base cc20c63): risk medium, review_due false (under_budget), slice stays open.
+- **L8 (2026-11-05, user):** "Sí, descargá". Corpus downloaded to `data/financebench` in 54 s: 150 questions, 84 PDFs, 157.9 MB. Verified every referenced document is present, every file starts with `%PDF-`, every size matches the GitHub tree, and no `.part` files remain. Next: T2 (FFP preprocessing).
