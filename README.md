@@ -68,4 +68,25 @@ cd backend
 uv run python -m finsage_replica.ffp.pipeline --workers 10
 ```
 
-Output goes to `data/processed/` (`pages/`, `chunks/`, `embeddings/`, `stats.json`). Each stage caches per document, so an interrupted run resumes. Chunk page indexes are 0-based, matching FinanceBench `evidence_page_num`.
+Output goes to `data/processed/` (`pages/`, `chunks/`, `embeddings/`, `stats.json`).
+
+## Chatbot
+
+Requires Node 20+. Start the API and the web app in two terminals:
+
+```bash
+cd backend
+uv run python -m finsage_replica.api
+```
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. Until the live pipeline is wired (T4) the API serves a development fixture: every run is labeled "Dev fixture" in the UI and is never recorded. Live runs are recorded automatically to `recordings/` and can be replayed from "Recorded runs", which is the fallback for the classroom demo.
+
+The event contract is `contracts/pipeline-events.schema.json`, generated from `backend/src/finsage_replica/domain/events.py` with `uv run python -m finsage_replica.domain.events`. The frontend mirror is `frontend/src/contracts/events.ts`.
+
+Tests: `uv run pytest` in `backend/`, `npm test` and `npm run typecheck` in `frontend/`. Each stage caches per document, so an interrupted run resumes. Chunk page indexes are 0-based, matching FinanceBench `evidence_page_num`.
