@@ -3,7 +3,7 @@
 It replays one fixed scenario for any question and marks every run as `source="dev"`.
 The UI shows a development banner for these runs, and `RecordingWriter` refuses to
 record them, so fixture output can never pass as a pipeline result in the demo.
-The chunk texts are real excerpts from 3M_2018_10K (verified in T2a); the scores and
+The chunk texts are real excerpts from AMD_2022_10K (the default scope, verified in T2a); the scores and
 the answer are made up for layout purposes.
 """
 
@@ -27,24 +27,28 @@ from finsage_replica.domain.events import (
 )
 from finsage_replica.ports.pipeline import Turn
 
-_CASHFLOW = "3M Company and Subsidiaries Consolidated Statement of Cash Flows"
-_CAPEX_ROW = (
-    "|(Millions)|2018|2017|2016|\n|---|---|---|---|\n"
-    "|Purchases of property, plant and equipment (PP&E)|(1,577)|(1,373)|(1,420)|"
-)
 _CHUNKS = {
-    "cashflow": ChunkRef(chunk_id="3M_2018_10K:59:3", doc_name="3M_2018_10K", page_index=59,
-                         section=_CASHFLOW, snippet=_CAPEX_ROW, score=0.0),
-    "mdna": ChunkRef(chunk_id="3M_2018_10K:45:2", doc_name="3M_2018_10K", page_index=45,
-                     section="Financial Condition and Liquidity",
-                     snippet="Purchases of property, plant and equipment (PP&E) ... investing activities", score=0.0),
-    "segments": ChunkRef(chunk_id="3M_2018_10K:48:1", doc_name="3M_2018_10K", page_index=48,
-                         section="Cash Flows from Investing Activities",
-                         snippet="Purchases of property, plant and equipment (PP&E) (1,577)", score=0.0),
+    "concentration": ChunkRef(
+        chunk_id="AMD_2022_10K:11:0", doc_name="AMD_2022_10K", page_index=11, section="Customers",
+        snippet="One customer accounted for 16% of our consolidated net revenue for the year ended December 31, 2022.",
+        score=0.0,
+    ),
+    "oem": ChunkRef(
+        chunk_id="AMD_2022_10K:11:1", doc_name="AMD_2022_10K", page_index=11,
+        section="Original Equipment Manufacturers",
+        snippet="We focus on three types of OEM partners: multi-nationals, selected regional accounts and selected "
+        "global and local system integrators.",
+        score=0.0,
+    ),
+    "segments": ChunkRef(
+        chunk_id="AMD_2022_10K:47:2", doc_name="AMD_2022_10K", page_index=47, section="Results of Operations",
+        snippet="|Net revenue:|||\n|Data Center|$ 6,043|$ 3,694|\n|Client|6,201|6,887|\n|Gaming|6,805|5,607|",
+        score=0.0,
+    ),
 }
 _ANSWER = (
     "Development fixture, not a pipeline answer. "
-    "Example layout: 3M reported purchases of property, plant and equipment of $1,577 million in FY2018 [1]."
+    "Example layout: AMD reported that one customer accounted for 16% of its consolidated net revenue in FY2022 [1]."
 )
 
 
@@ -73,20 +77,20 @@ class DevSource:
         await pause()
         yield Rewrite(run_id=run_id, t_ms=t(), sub_questions=[question])
         for path, hits, hyde in [
-            ("bm25", [_hit("cashflow", 12.4), _hit("segments", 10.9)], None),
-            ("dense", [_hit("mdna", 0.71), _hit("cashflow", 0.66)], None),
-            ("metadata", [_hit("cashflow", 0.74)], None),
-            ("hyde", [_hit("cashflow", 0.81), _hit("segments", 0.77)],
-             "3M's capital expenditures for fiscal 2018 were approximately $1.5 billion."),
+            ("bm25", [_hit("concentration", 11.8), _hit("oem", 7.2)], None),
+            ("dense", [_hit("concentration", 0.69), _hit("segments", 0.52)], None),
+            ("metadata", [_hit("concentration", 0.71), _hit("oem", 0.64)], None),
+            ("hyde", [_hit("concentration", 0.83)],
+             "In fiscal 2022 one large customer represented a significant share of AMD's net revenue."),
         ]:
             await pause(0.6)
             yield Retrieval(run_id=run_id, t_ms=t(), sub_question=0, path=path, hits=hits, hyde_text=hyde)
         await pause()
         yield Rerank(run_id=run_id, t_ms=t(), sub_question=0,
-                     top=[_hit("cashflow", 0.97), _hit("segments", 0.81), _hit("mdna", 0.44)])
+                     top=[_hit("concentration", 0.96), _hit("oem", 0.58), _hit("segments", 0.21)])
         for word in _ANSWER.split(" "):
             await pause(0.08)
             yield AnswerDelta(run_id=run_id, t_ms=t(), text=word + " ")
-        yield Citation(run_id=run_id, t_ms=t(), marker=1, chunk_id="3M_2018_10K:59:3",
-                       doc_name="3M_2018_10K", page_index=59)
+        yield Citation(run_id=run_id, t_ms=t(), marker=1, chunk_id="AMD_2022_10K:11:0",
+                       doc_name="AMD_2022_10K", page_index=11)
         yield Done(run_id=run_id, t_ms=t(), latency_ms=t(), stages_ms={}, tokens_in=0, tokens_out=0, cost_usd=0.0)

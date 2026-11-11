@@ -11,6 +11,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, field_validator
 
+from finsage_replica.corpus.scope import DocumentScope
 from finsage_replica.demo.recording import RecordingSource, RecordingWriter, list_recordings, recording_path
 from finsage_replica.domain.events import Event, RunError, RunStarted
 from finsage_replica.ports.pipeline import ChatPipeline, Turn
@@ -47,13 +48,25 @@ async def _sse(events: AsyncIterator[Event]) -> AsyncIterator[str]:
         yield f"data: {error.model_dump_json()}\n\n"
 
 
-def create_app(source: ChatPipeline, pdf_dir: Path, recordings_dir: Path, record_live: bool = True) -> FastAPI:
+def create_app(
+    source: ChatPipeline,
+    pdf_dir: Path,
+    recordings_dir: Path,
+    record_live: bool = True,
+    scope: DocumentScope | None = None,
+) -> FastAPI:
     app = FastAPI(title="FinSage replica")
     writer = RecordingWriter(recordings_dir)
 
     @app.get("/api/health")
     def health() -> dict:
         return {"source": source.name}
+
+    @app.get("/api/scope")
+    def get_scope() -> dict:
+        if scope is None:
+            raise HTTPException(status_code=404, detail="no document configured")
+        return asdict(scope)
 
     @app.post("/api/chat")
     async def chat(request: ChatRequest) -> StreamingResponse:
