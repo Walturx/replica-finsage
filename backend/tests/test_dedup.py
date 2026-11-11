@@ -1,6 +1,6 @@
 import numpy as np
 
-from finsage_replica.preprocessing.dedup import deduplicate, inherited_pages, representatives
+from finsage_replica.ffp.dedup import deduplicate, inherited_pages, representatives
 
 
 def _unit(*vectors: list[float]) -> np.ndarray:

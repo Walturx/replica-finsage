@@ -13,29 +13,16 @@ from __future__ import annotations
 
 import re
 from collections.abc import Callable
-from dataclasses import dataclass
+
+from finsage_replica.domain.documents import Chunk, Page
+
+__all__ = ["Chunk", "Page", "chunk_pages", "clean_heading"]
 
 CountTokens = Callable[[str], int]
 
 _HEADING = re.compile(r"^\s*#{1,6}\s+(.*)$")
 _TABLE_SEPARATOR = re.compile(r"^\|[\s:|-]+\|?\s*$")
 _MARKUP = re.compile(r"\*\*|__|</?u>|(?<!\w)_|_(?!\w)")
-
-
-@dataclass(frozen=True)
-class Page:
-    page_index: int
-    markdown: str
-
-
-@dataclass(frozen=True)
-class Chunk:
-    chunk_id: str
-    doc_name: str
-    page_index: int
-    section: str
-    text: str
-    n_tokens: int
 
 
 def clean_heading(line: str) -> str:

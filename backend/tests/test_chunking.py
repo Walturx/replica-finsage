@@ -1,4 +1,4 @@
-from finsage_replica.preprocessing.chunking import Page, chunk_pages
+from finsage_replica.ffp.chunking import Page, chunk_pages
 
 
 def words(text: str) -> int:
