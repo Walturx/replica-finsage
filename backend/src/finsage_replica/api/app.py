@@ -68,10 +68,14 @@ def create_app(source: ChatPipeline, pdf_dir: Path, recordings_dir: Path, record
 
         return StreamingResponse(_sse(events()), media_type="text/event-stream")
 
+    pdf_root = Path(pdf_dir).resolve()
+
     @app.get("/api/pdfs/{name}")
     def pdf(name: str) -> FileResponse:
-        path = Path(pdf_dir) / name
-        if not _PDF_NAME.match(name) or not path.is_file():
+        if not _PDF_NAME.fullmatch(name):
+            raise HTTPException(status_code=404, detail="document not found")
+        path = (pdf_root / name).resolve()  # follows links, so a link pointing outside is rejected below
+        if path.parent != pdf_root or not path.is_file():
             raise HTTPException(status_code=404, detail="document not found")
         return FileResponse(path, media_type="application/pdf")
 

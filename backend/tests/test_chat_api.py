@@ -7,7 +7,7 @@ from pydantic import TypeAdapter
 
 from finsage_replica.api.app import create_app
 from finsage_replica.demo.dev_source import DevSource
-from finsage_replica.demo.recording import RecordingSource, RecordingWriter, list_recordings
+from finsage_replica.demo.recording import RecordingSource, RecordingWriter, list_recordings, recording_path
 from finsage_replica.domain.events import Event, RunStarted
 
 EVENTS = TypeAdapter(Event)
@@ -136,6 +136,58 @@ def test_replay_endpoint_streams_a_recording(client, tmp_path):
     assert [e["type"] for e in events] == ["run_started", "answer_delta", "done"]
     assert events[0]["source"] == "recording"
     assert client.get("/api/recordings/nope/replay?speed=0").status_code == 404
+
+
+def test_replay_refuses_files_that_were_not_live_runs(client, tmp_path):
+    import asyncio
+
+    recordings = tmp_path / "recordings"
+    recordings.mkdir()
+    events = _live_events("planted")
+    events[0]["source"] = "dev"
+    (recordings / "planted.jsonl").write_text("\n".join(json.dumps(e) for e in events), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="live"):
+        asyncio.run(_collect(RecordingSource(recordings, "planted", speed=0).run("", [])))
+    assert "planted" not in [r["run_id"] for r in client.get("/api/recordings").json()]
+    replayed = _sse_events(client.get("/api/recordings/planted/replay?speed=0"))
+    assert [e["type"] for e in replayed] == ["error"]
+
+
+def test_listing_skips_malformed_recordings(client, tmp_path):
+    recordings = tmp_path / "recordings"
+    recordings.mkdir()
+    (recordings / "broken.jsonl").write_text("not json\n", encoding="utf-8")
+
+    response = client.get("/api/recordings")
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_names_with_a_trailing_newline_are_rejected(tmp_path):
+    assert recording_path(tmp_path, "nl\n") is None
+    (tmp_path / "x.pdf").write_bytes(b"%PDF")
+    client = TestClient(create_app(source=DevSource(delay_s=0), pdf_dir=tmp_path, recordings_dir=tmp_path / "r"))
+
+    assert client.get("/api/pdfs/x.pdf%0A").status_code == 404
+
+
+def test_pdf_symlinks_that_leave_the_directory_are_not_served(tmp_path):
+    import os
+
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "secret.pdf").write_bytes(b"%PDF-SECRET")
+    pdfs = tmp_path / "pdfs"
+    pdfs.mkdir()
+    try:
+        os.symlink(outside / "secret.pdf", pdfs / "link.pdf")
+    except OSError:
+        pytest.skip("symlinks not available on this system")
+    client = TestClient(create_app(source=DevSource(delay_s=0), pdf_dir=pdfs, recordings_dir=tmp_path / "r"))
+
+    assert client.get("/api/pdfs/link.pdf").status_code == 404
 
 
 def test_committed_contract_matches_the_event_models():

@@ -8,7 +8,6 @@ are never recorded.
 from __future__ import annotations
 
 import asyncio
-import json
 import re
 from collections.abc import AsyncIterator
 from dataclasses import dataclass
@@ -31,7 +30,7 @@ class RecordingInfo:
 
 def recording_path(directory: Path, run_id: str) -> Path | None:
     """Path of a recording, or None when the id is malformed or the file does not exist."""
-    if not _RUN_ID.match(run_id):
+    if not _RUN_ID.fullmatch(run_id):
         return None
     path = Path(directory) / f"{run_id}.jsonl"
     return path if path.is_file() else None
@@ -52,7 +51,7 @@ class RecordingWriter:
                         raise ValueError("a recording must start with run_started")
                     if event.source != "live":
                         raise ValueError(f"only live runs are recorded, got source={event.source} (dev fixtures never)")
-                    if not _RUN_ID.match(event.run_id):
+                    if not _RUN_ID.fullmatch(event.run_id):
                         raise ValueError(f"invalid run_id {event.run_id!r}")
                     self._dir.mkdir(parents=True, exist_ok=True)
                     final = self._dir / f"{event.run_id}.jsonl"
@@ -86,11 +85,17 @@ class RecordingSource:
 
     async def run(self, question: str, history: list[Turn]) -> AsyncIterator[Event]:
         previous_t = 0
+        first = True
         with self._path.open(encoding="utf-8") as fh:
             for line in fh:
                 if not line.strip():
                     continue
                 event = EVENT_ADAPTER.validate_json(line)
+                if first:
+                    # Only real pipeline runs may be shown as recordings, whatever ended up on disk.
+                    if not isinstance(event, RunStarted) or event.source != "live":
+                        raise ValueError(f"{self._path.name} is not a recording of a live run")
+                    first = False
                 if self._speed > 0:
                     await asyncio.sleep(max(0, event.t_ms - previous_t) / 1000 / self._speed)
                 previous_t = event.t_ms
@@ -105,6 +110,11 @@ def list_recordings(directory: Path) -> list[RecordingInfo]:
         return []
     infos = []
     for path in sorted(directory.glob("*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True):
-        first = json.loads(path.open(encoding="utf-8").readline())
-        infos.append(RecordingInfo(first["run_id"], first["question"], first["model"], first.get("recorded_at") or ""))
+        try:
+            with path.open(encoding="utf-8") as fh:
+                first = EVENT_ADAPTER.validate_json(fh.readline())
+        except (OSError, ValueError):
+            continue  # unreadable or malformed files are not listed
+        if isinstance(first, RunStarted) and first.source == "live" and path.stem == first.run_id:
+            infos.append(RecordingInfo(first.run_id, first.question, first.model, first.recorded_at or ""))
     return infos
