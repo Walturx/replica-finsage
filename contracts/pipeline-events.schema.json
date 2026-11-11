@@ -1,0 +1,457 @@
+{
+  "$defs": {
+    "AnswerDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "answer_delta",
+          "default": "answer_delta",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "text"
+      ],
+      "title": "AnswerDelta",
+      "type": "object"
+    },
+    "ChunkRef": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "doc_name": {
+          "title": "Doc Name",
+          "type": "string"
+        },
+        "page_index": {
+          "description": "0-based, like FinanceBench evidence_page_num.",
+          "minimum": 0,
+          "title": "Page Index",
+          "type": "integer"
+        },
+        "section": {
+          "title": "Section",
+          "type": "string"
+        },
+        "snippet": {
+          "title": "Snippet",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "chunk_id",
+        "doc_name",
+        "page_index",
+        "section",
+        "snippet",
+        "score"
+      ],
+      "title": "ChunkRef",
+      "type": "object"
+    },
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "citation",
+          "default": "citation",
+          "title": "Type",
+          "type": "string"
+        },
+        "marker": {
+          "description": "The [n] marker used in the answer text.",
+          "minimum": 1,
+          "title": "Marker",
+          "type": "integer"
+        },
+        "chunk_id": {
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "doc_name": {
+          "title": "Doc Name",
+          "type": "string"
+        },
+        "page_index": {
+          "minimum": 0,
+          "title": "Page Index",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "marker",
+        "chunk_id",
+        "doc_name",
+        "page_index"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "Done": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "done",
+          "default": "done",
+          "title": "Type",
+          "type": "string"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "stages_ms": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Stages Ms",
+          "type": "object"
+        },
+        "tokens_in": {
+          "minimum": 0,
+          "title": "Tokens In",
+          "type": "integer"
+        },
+        "tokens_out": {
+          "minimum": 0,
+          "title": "Tokens Out",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "minimum": 0,
+          "title": "Cost Usd",
+          "type": "number"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "latency_ms",
+        "stages_ms",
+        "tokens_in",
+        "tokens_out",
+        "cost_usd"
+      ],
+      "title": "Done",
+      "type": "object"
+    },
+    "Rerank": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "rerank",
+          "default": "rerank",
+          "title": "Type",
+          "type": "string"
+        },
+        "sub_question": {
+          "minimum": 0,
+          "title": "Sub Question",
+          "type": "integer"
+        },
+        "top": {
+          "items": {
+            "$ref": "#/$defs/ChunkRef"
+          },
+          "title": "Top",
+          "type": "array"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "sub_question",
+        "top"
+      ],
+      "title": "Rerank",
+      "type": "object"
+    },
+    "Retrieval": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "retrieval",
+          "default": "retrieval",
+          "title": "Type",
+          "type": "string"
+        },
+        "sub_question": {
+          "minimum": 0,
+          "title": "Sub Question",
+          "type": "integer"
+        },
+        "path": {
+          "enum": [
+            "bm25",
+            "dense",
+            "metadata",
+            "hyde"
+          ],
+          "title": "Path",
+          "type": "string"
+        },
+        "hits": {
+          "items": {
+            "$ref": "#/$defs/ChunkRef"
+          },
+          "title": "Hits",
+          "type": "array"
+        },
+        "hyde_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hyde Text"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "sub_question",
+        "path",
+        "hits"
+      ],
+      "title": "Retrieval",
+      "type": "object"
+    },
+    "Rewrite": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "rewrite",
+          "default": "rewrite",
+          "title": "Type",
+          "type": "string"
+        },
+        "sub_questions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Sub Questions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "sub_questions"
+      ],
+      "title": "Rewrite",
+      "type": "object"
+    },
+    "RunError": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "error",
+          "default": "error",
+          "title": "Type",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "message"
+      ],
+      "title": "RunError",
+      "type": "object"
+    },
+    "RunStarted": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "t_ms": {
+          "description": "Milliseconds since the run started.",
+          "minimum": 0,
+          "title": "T Ms",
+          "type": "integer"
+        },
+        "type": {
+          "const": "run_started",
+          "default": "run_started",
+          "title": "Type",
+          "type": "string"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "source": {
+          "description": "live: real pipeline. recording: replay of a live run. dev: UI fixture.",
+          "enum": [
+            "live",
+            "recording",
+            "dev"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "recorded_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recorded At"
+        }
+      },
+      "required": [
+        "run_id",
+        "t_ms",
+        "question",
+        "source",
+        "model"
+      ],
+      "title": "RunStarted",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "answer_delta": "#/$defs/AnswerDelta",
+      "citation": "#/$defs/Citation",
+      "done": "#/$defs/Done",
+      "error": "#/$defs/RunError",
+      "rerank": "#/$defs/Rerank",
+      "retrieval": "#/$defs/Retrieval",
+      "rewrite": "#/$defs/Rewrite",
+      "run_started": "#/$defs/RunStarted"
+    },
+    "propertyName": "type"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/RunStarted"
+    },
+    {
+      "$ref": "#/$defs/Rewrite"
+    },
+    {
+      "$ref": "#/$defs/Retrieval"
+    },
+    {
+      "$ref": "#/$defs/Rerank"
+    },
+    {
+      "$ref": "#/$defs/AnswerDelta"
+    },
+    {
+      "$ref": "#/$defs/Citation"
+    },
+    {
+      "$ref": "#/$defs/Done"
+    },
+    {
+      "$ref": "#/$defs/RunError"
+    }
+  ]
+}

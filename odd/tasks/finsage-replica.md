@@ -23,7 +23,7 @@ Branch: `feat/finsage-replica` · Delivery strategy: `ask-on-risk` (local repo, 
 | T3 | S1, S4 | Indexes and MPR retrieval, experiment A | inline | pending | |
 | T4 | S1, S2 | Reranker and answer generation | inline | pending | |
 | T5 | S2, S4 | Evaluation: judge, naive baseline, cost/latency, experiments B and C | inline | pending | |
-| T6 | S3, S5 | Visual chatbot: event contract, FastAPI streaming API, React UI, record and replay | inline | pending | |
+| T6 | S3, S5 | Visual chatbot: event contract, FastAPI streaming API, React UI, record and replay | inline | in progress | Backend unit: RED ImportError, GREEN 29 passed |
 | T7 | S4 | Week 13 presentation material | inline | pending | |
 
 ## Log
