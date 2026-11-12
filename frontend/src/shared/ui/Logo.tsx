@@ -1,4 +1,4 @@
-/** Ledger mark: three filing rows, the middle one ending in an evidence dot. */
+/** Ledger mark: three filing rows, the middle one ending in an evidence dot. Used as favicon and compact logo. */
 export function LogoMark({ size = 26 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
@@ -11,14 +11,30 @@ export function LogoMark({ size = 26 }: { size?: number }) {
   );
 }
 
-export function Logo() {
+/**
+ * "FinSage" wordmark in a geometric display face. The dot of the i is the evidence dot from the mark,
+ * and "Sage" carries the brand gradient.
+ */
+export function Wordmark({ size = 22 }: { size?: number }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <LogoMark />
-      <div className="flex items-baseline gap-2">
-        <span className="text-[15px] font-semibold tracking-tight">FinSage</span>
-        <span className="hidden font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground sm:inline">replica</span>
-      </div>
-    </div>
+    <span
+      role="img"
+      aria-label="FinSage"
+      className="inline-flex select-none items-baseline font-display font-semibold leading-none tracking-[-0.02em]"
+      style={{ fontSize: size }}
+    >
+      <span aria-hidden>F</span>
+      <span aria-hidden className="relative">
+        ı
+        <span
+          className="absolute left-1/2 rounded-full bg-accent"
+          style={{ width: size * 0.2, height: size * 0.2, top: -size * 0.02, transform: "translateX(-50%)" }}
+        />
+      </span>
+      <span aria-hidden>n</span>
+      <span aria-hidden className="brand-gradient">
+        Sage
+      </span>
+    </span>
   );
 }

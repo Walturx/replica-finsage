@@ -47,27 +47,33 @@ export function TracePanel({ turn, onOpen }: { turn: AssistantTurn; onOpen: (c: 
   const reranked = Object.values(turn.rerank).reduce((n, top) => n + top.length, 0);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full cursor-pointer select-none items-center gap-1.5 border-b border-border pb-2 text-left text-[12.5px] text-muted-foreground focus-visible:outline-2 focus-visible:outline-accent"
+        className="flex w-full cursor-pointer select-none items-center gap-1.5 rounded-sm border-b border-border pb-2 text-left text-[12.5px] text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-foreground"
       >
-        {running && <span aria-hidden className="pulse-dot h-1.5 w-1.5 rounded-full bg-foreground" />}
-        <span className={running ? "text-shimmer" : ""}>
-          {running ? "Working" : "How this answer was found"}
-        </span>
-        <span>·</span>
-        <span className="tabular-nums">
-          {pathsDone} path runs · {reranked} kept ·{" "}
-        </span>
-        <Elapsed running={running} ms={turn.done?.latency_ms ?? turn.lastEventMs} />
-        <ChevronDown aria-hidden className={`ml-auto h-3.5 w-3.5 transition-transform ${open ? "" : "-rotate-90"}`} />
+        <ChevronDown aria-hidden className={`h-3.5 w-3.5 shrink-0 transition-transform ${open ? "" : "-rotate-90"}`} />
+        {running ? (
+          <>
+            <span aria-hidden className="pulse-dot h-1.5 w-1.5 rounded-full bg-foreground" />
+            <span className="text-shimmer">Working for</span>
+            <Elapsed running ms={0} />
+          </>
+        ) : (
+          <>
+            <span>Found in</span>
+            <Elapsed running={false} ms={turn.done?.latency_ms ?? turn.lastEventMs} />
+            <span className="tabular-nums text-muted-2">
+              · {pathsDone} searches · top {reranked} kept
+            </span>
+          </>
+        )}
       </button>
 
       {open && (
-        <ol className="m-0 flex list-none flex-col gap-3 border-l border-border p-0 pl-3 text-[12.5px] text-muted-foreground">
+        <ol className="m-0 flex list-none flex-col gap-3 border-l border-border p-0 pl-3 text-[13px] text-muted-foreground">
           {turn.subQuestions.length > 0 && (
             <li className="animate-fade-in-up flex flex-col gap-1">
               <span className="flex items-center gap-2">

@@ -45,7 +45,7 @@ export function AssistantMessage({ turn, onOpenCitation, onOpenChunk }: Props) {
       <TracePanel turn={turn} onOpen={onOpenChunk} />
 
       {turn.text && (
-        <div className="whitespace-pre-wrap text-[14px] leading-[1.7] text-foreground [overflow-wrap:anywhere]">
+        <div className="whitespace-pre-wrap text-[13.5px] leading-[1.7] text-foreground [overflow-wrap:anywhere]">
           {parts.map((part, i) =>
             part.kind === "text" ? (
               <span key={i}>{part.value}</span>

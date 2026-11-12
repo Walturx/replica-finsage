@@ -1,21 +1,22 @@
-import { RotateCcw } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { ChunkRef, Source } from "../contracts/events";
+import type { Source } from "../contracts/events";
 import { ChatView } from "../features/chat/ChatView";
 import { useChat } from "../features/chat/useChat";
-import { RecordingsList } from "../features/demo-mode/RecordingsList";
+import { useScope } from "../features/document/useScope";
 import { PdfPanel, type PdfTarget } from "../features/pdf-viewer/PdfPanel";
-import { Logo } from "../shared/ui/Logo";
-import { SourceBadge } from "../shared/ui/SourceBadge";
-
-type Mode = "chat" | "recordings";
+import { useTheme } from "../shared/theme/useTheme";
+import { Wordmark } from "../shared/ui/Logo";
+import { Sidebar } from "./Sidebar";
 
 export function App() {
   const chat = useChat();
-  const [mode, setMode] = useState<Mode>("chat");
+  const scope = useScope();
+  const theme = useTheme();
   const [pdf, setPdf] = useState<PdfTarget | null>(null);
   const [backend, setBackend] = useState<Source | "offline" | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/health")
@@ -23,78 +24,81 @@ export function App() {
       .then((h: { source: Source }) => setBackend(h.source), () => setBackend("offline"));
   }, []);
 
-  const openChunk = (c: ChunkRef) => setPdf(c);
   const offline = backend === "offline";
+  const doc = scope.status === "ready" ? scope.scope : null;
+
+  const sidebar = (onClose?: () => void) => (
+    <Sidebar
+      scope={scope}
+      backend={backend}
+      busy={chat.busy}
+      theme={theme.choice}
+      onTheme={theme.setChoice}
+      onNewChat={() => {
+        chat.reset();
+        setPdf(null);
+        onClose?.();
+      }}
+      onAsk={(q) => {
+        void chat.send(q);
+        onClose?.();
+      }}
+      onOpenFiling={(doc_name) => {
+        setPdf({ doc_name, page_index: 0 });
+        onClose?.();
+      }}
+      onReplay={(r) => {
+        void chat.replay(r.run_id, r.question);
+        onClose?.();
+      }}
+      onClose={onClose}
+    />
+  );
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <header className="flex items-center gap-3 border-b border-border px-4 py-2.5 sm:px-6">
-        <Logo />
-        <nav className="ml-1 flex shrink-0 rounded-full bg-muted p-0.5 text-[12.5px] whitespace-nowrap sm:ml-4" aria-label="Mode">
-          {(["chat", "recordings"] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => setMode(m)}
-              aria-pressed={mode === m}
-              className={`cursor-pointer rounded-full px-3 py-1 transition-colors ${mode === m ? "bg-card font-medium text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              {m === "chat" ? "Ask" : (
-                <>
-                  <span className="sm:hidden">Recorded</span>
-                  <span className="hidden sm:inline">Recorded runs</span>
-                </>
-              )}
-            </button>
-          ))}
-        </nav>
-        <div className="ml-auto flex items-center gap-2">
-          {backend && backend !== "offline" && (
-            <span className="hidden sm:inline-flex">
-              <SourceBadge source={backend} />
-            </span>
-          )}
-          {offline && <span className="text-[12px] text-bad">Backend offline</span>}
-          {chat.turns.length > 0 && (
-            <button
-              type="button"
-              onClick={chat.reset}
-              disabled={chat.busy}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full px-2.5 py-1 text-[12.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40"
-            >
-              <RotateCcw className="h-3.5 w-3.5" /> New chat
-            </button>
-          )}
-        </div>
-      </header>
+    <div className="flex h-full min-h-0">
+      <div className="hidden shrink-0 md:flex">{sidebar()}</div>
 
-      <div className="flex min-h-0 flex-1">
-        {mode === "recordings" && (
-          <aside className="w-[300px] shrink-0 overflow-y-auto border-r border-border bg-bg-alt p-3">
-            <p className="m-0 mb-2 px-2.5 font-mono text-[10.5px] uppercase tracking-wide text-muted-2">Recorded runs</p>
-            <RecordingsList disabled={chat.busy} onPlay={(r) => void chat.replay(r.run_id, r.question)} />
-          </aside>
-        )}
-        <main className="flex min-w-0 flex-1 flex-col">
-          <ChatView
-            turns={chat.turns}
-            busy={chat.busy}
-            composerDisabled={offline || mode === "recordings"}
-            composerNote={mode === "recordings" ? "Replaying recorded runs. Switch to Ask to send a new question." : undefined}
-            onSend={(text) => void chat.send(text)}
-            onStop={chat.stop}
-            onOpenCitation={setPdf}
-            onOpenChunk={openChunk}
-          />
-        </main>
-        {pdf && (
-          <div className="hidden w-[min(46%,640px)] shrink-0 md:flex">
-            <PdfPanel target={pdf} onClose={() => setPdf(null)} />
-          </div>
-        )}
-      </div>
+      {menuOpen && (
+        <div className="fixed inset-0 z-30 flex md:hidden">
+          <div className="flex">{sidebar(() => setMenuOpen(false))}</div>
+          <button type="button" aria-label="Close menu" className="flex-1 bg-black/30" onClick={() => setMenuOpen(false)} />
+        </div>
+      )}
+
+      <main className="flex min-w-0 flex-1 flex-col">
+        <header className="flex items-center gap-3 border-b border-border px-4 py-2.5 md:hidden">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground hover:bg-muted"
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+          <Wordmark size={18} />
+        </header>
+        <ChatView
+          turns={chat.turns}
+          busy={chat.busy}
+          docTitle={doc?.title}
+          examples={doc?.questions.slice(0, 4).map((q) => q.question) ?? []}
+          composerDisabled={offline}
+          composerNote={offline ? "The backend is offline. Start it with: uv run python -m finsage_replica.api" : undefined}
+          onSend={(text) => void chat.send(text)}
+          onStop={chat.stop}
+          onOpenCitation={setPdf}
+          onOpenChunk={setPdf}
+        />
+      </main>
+
       {pdf && (
-        <div className="fixed inset-0 z-20 flex md:hidden">
+        <div className="hidden w-[min(44%,620px)] shrink-0 lg:flex">
+          <PdfPanel target={pdf} onClose={() => setPdf(null)} />
+        </div>
+      )}
+      {pdf && (
+        <div className="fixed inset-0 z-20 flex lg:hidden">
           <PdfPanel target={pdf} onClose={() => setPdf(null)} />
         </div>
       )}
