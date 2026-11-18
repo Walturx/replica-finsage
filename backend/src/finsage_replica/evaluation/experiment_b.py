@@ -15,9 +15,7 @@ import time
 from pathlib import Path
 
 from finsage_replica.evaluation.judge import cited_page_hit
-
-SYSTEMS = ("finsage", "naive")
-SCORE = {"correct": 1.0, "partially_correct": 0.5, "incorrect": 0.0, "unparsed": 0.0}
+from finsage_replica.evaluation.judge_tab import SCORE, SYSTEMS
 
 
 async def _run_finsage(pipeline, question: str) -> dict:

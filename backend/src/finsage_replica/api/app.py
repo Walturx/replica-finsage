@@ -14,9 +14,26 @@ from pydantic import BaseModel, field_validator
 from finsage_replica.corpus.scope import DocumentScope
 from finsage_replica.demo.recording import RecordingSource, RecordingWriter, list_recordings, recording_path
 from finsage_replica.domain.events import Event, RunError, RunStarted
+from finsage_replica.evaluation.judge_tab import judge_overview, load_saved_outputs
+from finsage_replica.ports.judge import Judge
 from finsage_replica.ports.pipeline import ChatPipeline, Turn
 
 _PDF_NAME = re.compile(r"^[A-Za-z0-9_-]+\.pdf$")
+_MAX_ANSWER_CHARS = 20_000
+
+
+class GradeRequest(BaseModel):
+    question_id: str
+    answer: str
+
+    @field_validator("answer")
+    @classmethod
+    def answer_not_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("answer must not be empty")
+        if len(value) > _MAX_ANSWER_CHARS:
+            raise ValueError(f"answer must be at most {_MAX_ANSWER_CHARS} characters")
+        return value.strip()
 
 
 class ChatRequest(BaseModel):
@@ -54,9 +71,14 @@ def create_app(
     recordings_dir: Path,
     record_live: bool = True,
     scope: DocumentScope | None = None,
+    judge: Judge | None = None,
+    judge_questions: list[dict] | None = None,
+    judge_results_file: Path | None = None,
 ) -> FastAPI:
+    """`judge_questions` are the benchmark questions with `answer` (the reference) and 0-based `evidence_pages`."""
     app = FastAPI(title="FinSage replica")
     writer = RecordingWriter(recordings_dir)
+    benchmark = {q["id"]: q for q in judge_questions or []}
 
     @app.get("/api/health")
     def health() -> dict:
@@ -102,5 +124,24 @@ def create_app(
             raise HTTPException(status_code=404, detail="recording not found")
         replayer = RecordingSource(recordings_dir, run_id, speed=speed)
         return StreamingResponse(_sse(replayer.run("", [])), media_type="text/event-stream")
+
+    @app.get("/api/judge")
+    def judge_tab() -> dict:
+        outputs = load_saved_outputs(judge_results_file)
+        return judge_overview(list(benchmark.values()), outputs, judge.model if judge else None)
+
+    @app.post("/api/judge/grade")
+    def grade(request: GradeRequest) -> dict:
+        question = benchmark.get(request.question_id)
+        if question is None:
+            raise HTTPException(status_code=404, detail="Only FinanceBench benchmark questions can be graded.")
+        if judge is None:
+            raise HTTPException(status_code=503, detail="The judge is not configured. Set ANTHROPIC_API_KEY and run the live backend.")
+        try:
+            result = judge.grade(question["question"], question["answer"], request.answer)
+        except Exception as exc:  # report provider errors to the UI as they are
+            raise HTTPException(status_code=502, detail=f"The judge failed: {type(exc).__name__}: {exc}") from exc
+        return {"question_id": request.question_id, "verdict": result.verdict, "reason": result.reason,
+                "model": result.model, "cost_usd": result.cost_usd}
 
     return app

@@ -8,6 +8,7 @@ Environment (read from the repo `.env` too):
     GENERATOR_MODEL  OpenAI model for rewriting, HyDE and answers (default gpt-6-luna)
     FINSAGE_RERANKER llm (default, the generator grades candidates) or bge (bge-reranker-v2-m3 cross-encoder)
     OPENAI_API_KEY   required for live
+    ANTHROPIC_API_KEY  for the judge tab (Claude Opus grades benchmark answers); the chat works without it
     FINSAGE_PORT     default 8765
 """
 
@@ -54,8 +55,12 @@ def main() -> None:
         raise SystemExit(f"{scope.doc_name} has no FinanceBench open-source questions; pick another FINSAGE_DOC")
 
     source_name = os.environ.get("FINSAGE_SOURCE", "live")
+    judge = None
     if source_name == "live":
+        from finsage_replica.adapters.claude_judge import ClaudeJudge
+
         source = _live_source(scope)
+        judge = ClaudeJudge()  # judge tab only; credentials are checked on the first grade
     elif source_name == "dev":
         from finsage_replica.demo.dev_source import DevSource
 
@@ -63,7 +68,13 @@ def main() -> None:
     else:
         raise SystemExit(f"FINSAGE_SOURCE must be live or dev, got {source_name!r}")
 
-    app = create_app(source=source, pdf_dir=DATA / "financebench" / "pdfs", recordings_dir=REPO / "recordings", scope=scope)
+    from finsage_replica.evaluation.experiment_a import _questions
+
+    app = create_app(
+        source=source, pdf_dir=DATA / "financebench" / "pdfs", recordings_dir=REPO / "recordings", scope=scope,
+        judge=judge, judge_questions=_questions(DATA / "financebench" / QUESTIONS_FILE, scope.doc_name),
+        judge_results_file=REPO / "results" / "experiment_b" / "results.json",
+    )
     uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("FINSAGE_PORT", "8765")))
 
 

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import anthropic
 
 from finsage_replica.evaluation.judge import JUDGE_INSTRUCTIONS, judge_prompt, parse_verdict
+from finsage_replica.ports.judge import Grade
 
 # US$ per million tokens (input, output); Anthropic first-party rates.
 PRICES_PER_MILLION = {"claude-opus-5-5": (4.00, 20.00)}
@@ -20,16 +19,6 @@ def judge_cost(
     price_in, price_out = PRICES_PER_MILLION[model]
     prompt = input_tokens + cache_creation_tokens * CACHE_WRITE_FACTOR + cache_read_tokens * CACHE_READ_FACTOR
     return (prompt * price_in + output_tokens * price_out) / 1_000_000
-
-
-@dataclass
-class Grade:
-    verdict: str
-    reason: str
-    model: str
-    tokens_in: int
-    tokens_out: int
-    cost_usd: float
 
 
 class ClaudeJudge:
