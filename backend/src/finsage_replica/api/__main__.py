@@ -1,6 +1,6 @@
 """Run the chatbot API.
 
-    uv run python -m finsage_replica.api            # live FinSage pipeline, port 8000
+    uv run python -m finsage_replica.api            # live FinSage pipeline, port 8765
 
 Environment (read from the repo `.env` too):
     FINSAGE_SOURCE   live (default) or dev (UI fixture, no models, no API calls)
@@ -8,7 +8,7 @@ Environment (read from the repo `.env` too):
     GENERATOR_MODEL  OpenAI model for rewriting, HyDE and answers (default gpt-6-luna)
     FINSAGE_RERANKER llm (default, the generator grades candidates) or bge (bge-reranker-v2-m3 cross-encoder)
     OPENAI_API_KEY   required for live
-    FINSAGE_PORT     default 8000
+    FINSAGE_PORT     default 8765
 """
 
 from __future__ import annotations
@@ -64,7 +64,7 @@ def main() -> None:
         raise SystemExit(f"FINSAGE_SOURCE must be live or dev, got {source_name!r}")
 
     app = create_app(source=source, pdf_dir=DATA / "financebench" / "pdfs", recordings_dir=REPO / "recordings", scope=scope)
-    uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("FINSAGE_PORT", "8000")))
+    uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("FINSAGE_PORT", "8765")))
 
 
 if __name__ == "__main__":

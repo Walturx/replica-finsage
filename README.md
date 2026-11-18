@@ -56,7 +56,7 @@ Optional settings, read from the environment or `.env`:
 | `FINSAGE_DOC` | `AMD_2022_10K` | FinanceBench document the chatbot and experiments use |
 | `FINSAGE_RERANKER` | `llm` | `llm` grades candidates with the generator, `bge` uses local `bge-reranker-v2-m3` |
 | `FINSAGE_SOURCE` | `live` | `live` runs the real pipeline, `dev` serves the development fixture |
-| `FINSAGE_PORT` | `8000` | API port |
+| `FINSAGE_PORT` | `8765` | API port, also read by the Vite dev proxy |
 
 `.env` does not override variables already set in the shell. If an `ANTHROPIC_BASE_URL` is inherited from another tool, the judge calls go to that endpoint instead, so unset it first (`env -u ANTHROPIC_BASE_URL ...`).
 
