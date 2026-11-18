@@ -125,7 +125,7 @@ f1 = p1.box(15, 60, 330, 110, step("1.1 Lectura por página", "El PDF se convier
 f2 = p1.box(15, 190, 330, 150, step("1.2 Fragmentación", "El texto se corta en pedazos de hasta 256 tokens. Ningún pedazo cruza de página. Cada título abre una sección nueva. Las tablas largas se parten por filas y cada parte repite el encabezado de columnas.", figure="670 fragmentos"), parent=f, status="done")
 f3 = p1.box(15, 360, 330, 100, step("1.3 Vectores de significado", "Cada fragmento se convierte en un vector con BGE-M3, para buscar por significado y no solo por palabras."), parent=f, status="done")
 f4 = p1.box(15, 480, 330, 130, step("1.4 Quitar duplicados", "Si dos fragmentos son casi iguales (similitud de 0.98 o más) se queda el primero. El que queda recuerda en qué otras páginas estaba su copia.", figure="598 fragmentos"), parent=f, status="done")
-f5 = p1.box(15, 630, 330, 130, step("1.5 Resumen de cada sección", "Un modelo de lenguaje resume cada sección en dos oraciones y ese resumen se pega a todos sus fragmentos como contexto.", note="Modelo: gpt-6-luna", figure="261 secciones"), parent=f, status="ready")
+f5 = p1.box(15, 630, 330, 130, step("1.5 Resumen de cada sección", "Un modelo de lenguaje resume cada sección en dos oraciones y ese resumen se pega a todos sus fragmentos como contexto.", note="Modelo: gpt-6-luna", figure="261 secciones"), parent=f, status="done")
 f6 = p1.box(15, 780, 330, 160, step("1.6 Tres índices", "<b>Palabras</b>: BM25<br><b>Significado</b>: FAISS con los vectores<br><b>Resúmenes</b>: vectores de los resúmenes de sección"), parent=f, status="todo")
 for a, b in [(f1, f2), (f2, f3), (f3, f4), (f4, f5), (f5, f6)]:
     p1.edge(a, b)
