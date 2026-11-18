@@ -66,3 +66,13 @@ def test_naive_answer_uses_raw_question_dense_top_k_and_cites():
     assert [c["page_index"] for c in result.cited] == [2]
     assert result.completion.cost_usd == 0.001
     assert "Q?" in llm.prompts[0] and "t2" in llm.prompts[0]
+
+
+def test_judge_cost_counts_cache_write_and_read_tokens():
+    from finsage_replica.adapters.claude_judge import judge_cost
+
+    # 4 / 20 US$ per million; cache writes cost 1.25x input, cache reads 0.1x input.
+    cost = judge_cost(
+        "claude-opus-5-5", input_tokens=2, cache_creation_tokens=1_000, cache_read_tokens=10_000, output_tokens=100
+    )
+    assert abs(cost - (2 * 4 + 1_000 * 5 + 10_000 * 0.4 + 100 * 20) / 1_000_000) < 1e-12

@@ -10,6 +10,16 @@ from finsage_replica.evaluation.judge import JUDGE_INSTRUCTIONS, judge_prompt, p
 
 # US$ per million tokens (input, output); Anthropic first-party rates.
 PRICES_PER_MILLION = {"claude-opus-5-5": (4.00, 20.00)}
+CACHE_WRITE_FACTOR, CACHE_READ_FACTOR = 1.25, 0.1  # relative to the input price
+
+
+def judge_cost(
+    model: str, input_tokens: int, cache_creation_tokens: int, cache_read_tokens: int, output_tokens: int
+) -> float:
+    """US$ for one call; prompt tokens may be billed as uncached input, cache writes or cache reads."""
+    price_in, price_out = PRICES_PER_MILLION[model]
+    prompt = input_tokens + cache_creation_tokens * CACHE_WRITE_FACTOR + cache_read_tokens * CACHE_READ_FACTOR
+    return (prompt * price_in + output_tokens * price_out) / 1_000_000
 
 
 @dataclass
@@ -40,9 +50,12 @@ class ClaudeJudge:
             system=JUDGE_INSTRUCTIONS,
             messages=[{"role": "user", "content": judge_prompt(question, reference, answer)}],
         )
-        tokens_in, tokens_out = response.usage.input_tokens, response.usage.output_tokens
-        price_in, price_out = PRICES_PER_MILLION[self.model]
-        cost = (tokens_in * price_in + tokens_out * price_out) / 1_000_000
+        usage = response.usage
+        cache_write = usage.cache_creation_input_tokens or 0
+        cache_read = usage.cache_read_input_tokens or 0
+        tokens_in = usage.input_tokens + cache_write + cache_read
+        tokens_out = usage.output_tokens
+        cost = judge_cost(self.model, usage.input_tokens, cache_write, cache_read, tokens_out)
         if response.stop_reason == "refusal":
             return Grade("unparsed", "judge refused", response.model, tokens_in, tokens_out, cost)
         text = "".join(block.text for block in response.content if block.type == "text")

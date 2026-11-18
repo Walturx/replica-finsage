@@ -1,0 +1,326 @@
+{
+  "financebench_id_00222": {
+    "finsage": {
+      "answer": "Yes. The quick ratio is a relevant measure of short-term liquidity because it compares cash, short-term investments, and receivables with current liabilities, excluding inventory and prepaid assets. AMD’s FY22 quick ratio was **($4,835 million + $1,020 million + $4,126 million) ÷ $6,369 million = 1.57**. [1][2] That indicates AMD had about $1.57 of quick assets for each dollar of current liabilities, suggesting a reasonably healthy liquidity profile.",
+      "cited_pages": [
+        55
+      ],
+      "latency_ms": 23416,
+      "stages_ms": {
+        "rewrite": 3506,
+        "hyde": 5540,
+        "retrieval": 1320,
+        "rerank": 9238,
+        "answer": 3809
+      },
+      "tokens_in": 10130,
+      "tokens_out": 1469,
+      "cost_usd": 0.001747,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate gives the same 1.57 quick ratio and the same conclusion that AMD's liquidity is reasonably healthy; leaving out the negligible related-party receivables does not change the result.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1678,
+        "tokens_out": 203,
+        "cost_usd": 0.0091084
+      }
+    },
+    "naive": {
+      "answer": "The provided excerpts do not answer whether AMD had a healthy quick ratio for FY22: they provide no quick-ratio figure or the asset and liability inputs needed to calculate it. [1] does state management expected its credit facility, commercial paper program, and operating cash flows to fund operations over the next 12 months and beyond, but that forward-looking statement does not establish the FY22 quick ratio. [1]",
+      "cited_pages": [
+        3
+      ],
+      "latency_ms": 3903,
+      "tokens_in": 1022,
+      "tokens_out": 277,
+      "cost_usd": 0.0002407,
+      "grade": {
+        "verdict": "incorrect",
+        "reason": "The candidate says it cannot determine the quick ratio and gives no figure or conclusion, whereas the reference computes a quick ratio of 1.57 and concludes AMD's liquidity is reasonably healthy.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1639,
+        "tokens_out": 90,
+        "cost_usd": 0.006653399999999999
+      }
+    }
+  },
+  "financebench_id_00995": {
+    "finsage": {
+      "answer": "As of FY22, AMD sold CPUs, GPUs, APUs, and chipsets for PCs and data centers, plus discrete and professional graphics products, semi-custom SoCs, and embedded processors and platforms. [1][2] Its portfolio also included DPUs, FPGAs, Adaptive SoCs, and related products. [1][2][4] AMD provided microprocessor and SoC development services and technology, and developed software tools, compilers, and drivers for its products. [1][3] It could also sell or license portions of its intellectual-property portfolio. [1][2]",
+      "cited_pages": [
+        3,
+        5,
+        42,
+        59
+      ],
+      "latency_ms": 19621,
+      "stages_ms": {
+        "rewrite": 3326,
+        "hyde": 4129,
+        "retrieval": 2144,
+        "rerank": 6594,
+        "answer": 3424
+      },
+      "tokens_in": 7495,
+      "tokens_out": 977,
+      "cost_usd": 0.001238,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate covers the reference's key products (CPUs, GPUs, APUs, chipsets, DPUs, FPGAs, Adaptive SoCs, semi-custom SoCs and development services, embedded products) across data center, PC, gaming and embedded markets, with extra correct detail.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1779,
+        "tokens_out": 114,
+        "cost_usd": 0.007833399999999999
+      }
+    },
+    "naive": {
+      "answer": "As of FY22, AMD sold x86 CPUs, GPUs, APUs, chipsets, data-center and professional GPUs, embedded processors, semi-custom SoCs, DPUs, FPGAs, and Adaptive SoC products; it also provided microprocessor and SoC development services and technology, and sometimes sold or licensed intellectual property [4]. Major product lines included Ryzen client processors, EPYC server processors, Radeon graphics, and Instinct data-center accelerators [3]. Following its 2022 acquisitions, AMD also offered Xilinx adaptive hardware products and Pensando DPUs with a software stack [2].",
+      "cited_pages": [
+        10,
+        42,
+        59
+      ],
+      "latency_ms": 3220,
+      "tokens_in": 1339,
+      "tokens_out": 242,
+      "cost_usd": 0.0002549,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate covers the reference's key product categories (server CPUs and GPUs, DPUs, FPGAs, Adaptive SoCs, client CPUs, APUs and chipsets, discrete GPUs, semi-custom SoCs and development services, and embedded products) and adds accurate extra detail.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1807,
+        "tokens_out": 118,
+        "cost_usd": 0.0080534
+      }
+    }
+  },
+  "financebench_id_01198": {
+    "finsage": {
+      "answer": "AMD’s FY22 revenue rose 44% to $23.6 billion from $16.4 billion in FY21, driven by higher Data Center revenue (up 64%) from EPYC processor sales, Gaming revenue (up 21%) from semi-custom products, and Embedded revenue growth from including Xilinx products after the acquisition. [1] These gains were partly offset by a 10% decline in Client revenue, reflecting weaker PC demand and inventory corrections across the PC supply chain. [1][2]",
+      "cited_pages": [
+        42,
+        47
+      ],
+      "latency_ms": 19404,
+      "stages_ms": {
+        "rewrite": 3023,
+        "hyde": 6869,
+        "retrieval": 43,
+        "rerank": 5514,
+        "answer": 3953
+      },
+      "tokens_in": 7305,
+      "tokens_out": 1049,
+      "cost_usd": 0.001255,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate names all three drivers in the reference: higher EPYC server processor sales, higher semi-custom product sales, and the inclusion of Xilinx embedded products. Its extra figures (44% growth to $23.6B) and the note on the Client revenue offset are accurate and consistent with the reference.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1623,
+        "tokens_out": 116,
+        "cost_usd": 0.0070934
+      }
+    },
+    "naive": {
+      "answer": "AMD’s FY2022 revenue rose 44% to $23.6 billion from $16.4 billion in FY2021, driven by 64% growth in Data Center revenue, 21% growth in Gaming revenue, and a significant increase in Embedded revenue, largely from Xilinx product sales. [2] These gains were partially offset by a 10% decline in Client revenue amid a weak PC market and inventory corrections across the PC supply chain. [2]",
+      "cited_pages": [
+        42
+      ],
+      "latency_ms": 3237,
+      "tokens_in": 1242,
+      "tokens_out": 176,
+      "cost_usd": 0.0002122,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate attributes the FY22 revenue increase to Data Center growth (EPYC server processors), Gaming growth (semi-custom products) and Xilinx embedded sales, which matches the reference's drivers; it frames them at segment level and adds accurate figures.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1603,
+        "tokens_out": 212,
+        "cost_usd": 0.0089134
+      }
+    }
+  },
+  "financebench_id_00917": {
+    "finsage": {
+      "answer": "Operating margin is a useful measure here because it shows how much of AMD’s revenue remains after operating costs, though acquisition-related charges materially affected the FY22 comparison. Using rounded operating income and revenue, margin was about 5.5% in FY22 ($1.3B ÷ $23.6B) versus 22.0% in FY21 ($3.6B ÷ $16.4B), a decline of roughly 16.5 percentage points. [4] The gross-margin rate fell from 48% to 45%, primarily because of Xilinx-related intangible amortization. [4] The All Other operating loss rose to $5.0B in 2022 from $409M in 2021; the 2022 loss primarily included $3.5B of acquisition-related intangible amortization, $1.1B of stock-based compensation, and $452M of acquisition-related costs. [1] Revenue grew 44%, but operating income fell, with the cited acquisition-related expenses weighing heavily on the comparison. [4][1]",
+      "cited_pages": [
+        42,
+        48
+      ],
+      "latency_ms": 29492,
+      "stages_ms": {
+        "rewrite": 3910,
+        "hyde": 9694,
+        "retrieval": 33,
+        "rerank": 8230,
+        "answer": 7622
+      },
+      "tokens_in": 8100,
+      "tokens_out": 2434,
+      "cost_usd": 0.002027,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate attributes the FY22 operating margin decline mainly to Xilinx acquisition-related intangible amortization, which matches the reference, and its supporting figures are accurate.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1796,
+        "tokens_out": 77,
+        "cost_usd": 0.0071784
+      }
+    },
+    "naive": {
+      "answer": "The provided excerpts do not state AMD’s FY22 operating margin or what drove its change. They report that gross margin fell from 48% in 2021 to 45% in 2022, primarily due to amortization of intangible assets associated with the Xilinx acquisition [4]; gross margin is not operating margin. The excerpts do not establish that operating margin is not useful for AMD.",
+      "cited_pages": [
+        48
+      ],
+      "latency_ms": 3468,
+      "tokens_in": 859,
+      "tokens_out": 274,
+      "cost_usd": 0.0002229,
+      "grade": {
+        "verdict": "partially_correct",
+        "reason": "The candidate names the correct driver (amortization of Xilinx acquisition intangibles), but it ties that driver to gross margin and declines to give a clear conclusion on operating margin, which hedges away from the reference's conclusion.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1591,
+        "tokens_out": 95,
+        "cost_usd": 0.0065134
+      }
+    }
+  },
+  "financebench_id_01279": {
+    "finsage": {
+      "answer": "Operating activities brought in the most cash in FY22: $3.565 billion, compared with $1.999 billion from investing activities; financing activities used $3.264 billion. [1]",
+      "cited_pages": [
+        50
+      ],
+      "latency_ms": 20813,
+      "stages_ms": {
+        "rewrite": 3685,
+        "hyde": 8273,
+        "retrieval": 21,
+        "rerank": 6123,
+        "answer": 2708
+      },
+      "tokens_in": 5762,
+      "tokens_out": 1544,
+      "cost_usd": 0.001348,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate names operating activities as the largest cash source in FY22, matching the reference, and its figures are consistent with AMD's filing.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1499,
+        "tokens_out": 100,
+        "cost_usd": 0.0061534
+      }
+    },
+    "naive": {
+      "answer": "The provided excerpts of the filing do not answer which of operating, investing, or financing activities brought in the most cash or lost the least in FY22.",
+      "cited_pages": [],
+      "latency_ms": 3868,
+      "tokens_in": 1258,
+      "tokens_out": 79,
+      "cost_usd": 0.0001653,
+      "grade": {
+        "verdict": "incorrect",
+        "reason": "The candidate says it cannot answer, whereas the reference identifies operating activities as bringing in the most cash flow for AMD in FY22.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1487,
+        "tokens_out": 65,
+        "cost_usd": 0.0053934
+      }
+    }
+  },
+  "financebench_id_00563": {
+    "finsage": {
+      "answer": "Data Center, with revenue increasing by ($6,043 million − $3,694 million) ÷ $3,694 million = 63.6% (about 64%), more than Gaming’s 21% increase; Client revenue declined. [2][3][4][5]",
+      "cited_pages": [
+        47,
+        48
+      ],
+      "latency_ms": 15427,
+      "stages_ms": {
+        "rewrite": 2732,
+        "hyde": 4221,
+        "retrieval": 36,
+        "rerank": 5906,
+        "answer": 2530
+      },
+      "tokens_in": 5857,
+      "tokens_out": 930,
+      "cost_usd": 0.001051,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate identifies Data Center as the segment with the largest proportional sales increase (about 64%), matching the reference answer.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1506,
+        "tokens_out": 58,
+        "cost_usd": 0.0053484
+      }
+    },
+    "naive": {
+      "answer": "Excluding Embedded, Data Center had the largest proportional sales increase: revenue rose 64% from FY21 to FY22, versus 21% for Gaming, while Client declined 10%. [1]",
+      "cited_pages": [
+        42
+      ],
+      "latency_ms": 2047,
+      "tokens_in": 1105,
+      "tokens_out": 115,
+      "cost_usd": 0.00016800000000000002,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate identifies Data Center as the segment with the largest proportional sales increase excluding Embedded, matching the reference answer, and its supporting figures (about 64% for Data Center, 21% for Gaming, Client down 10%) agree with AMD's reported FY22 results.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1491,
+        "tokens_out": 109,
+        "cost_usd": 0.006293399999999999
+      }
+    }
+  },
+  "financebench_id_00757": {
+    "finsage": {
+      "answer": "Yes. AMD reported that one customer accounted for 16% of consolidated net revenue in FY22; the sales were from its Gaming segment, and losing that customer could materially adversely affect the business. [1]",
+      "cited_pages": [
+        11
+      ],
+      "latency_ms": 14681,
+      "stages_ms": {
+        "rewrite": 2148,
+        "hyde": 4641,
+        "retrieval": 28,
+        "rerank": 5340,
+        "answer": 2521
+      },
+      "tokens_in": 9337,
+      "tokens_out": 876,
+      "cost_usd": 0.001372,
+      "grade": {
+        "verdict": "correct",
+        "reason": "The candidate confirms AMD reported customer concentration with one customer accounting for 16% of consolidated net revenue in FY22, matching the reference, and the added Gaming segment detail is consistent with the filing.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1487,
+        "tokens_out": 86,
+        "cost_usd": 0.0058134
+      }
+    },
+    "naive": {
+      "answer": "The provided excerpts of the filing do not answer whether AMD reported customer concentration in FY22. [1][2][3][4][5]",
+      "cited_pages": [
+        4,
+        5,
+        42,
+        59
+      ],
+      "latency_ms": 2263,
+      "tokens_in": 1214,
+      "tokens_out": 143,
+      "cost_usd": 0.00019290000000000003,
+      "grade": {
+        "verdict": "incorrect",
+        "reason": "The candidate says it cannot answer, missing the reference's key fact that one customer accounted for 16% of AMD's FY22 consolidated net revenue.",
+        "model": "claude-opus-5-5",
+        "tokens_in": 1463,
+        "tokens_out": 70,
+        "cost_usd": 0.0053733999999999995
+      }
+    }
+  }
+}
