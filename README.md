@@ -41,12 +41,24 @@ uv sync
 uv run pytest
 ```
 
-The language model provider is not wired yet (see S2 in the feature document). It will be configured through a `.env` file in the repository root, for example:
+API keys live in a `.env` file in the repository root, which is never committed:
 
 ```
-OPENAI_API_KEY=<your key>
-GENERATOR_MODEL=<model id>
+OPENAI_API_KEY=<your key>       # generator gpt-6-luna (rewriting, HyDE, summaries, reranking, answers)
+ANTHROPIC_API_KEY=<your key>    # experiment B judge claude-opus-5-5
 ```
+
+Optional settings, read from the environment or `.env`:
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `GENERATOR_MODEL` | `gpt-6-luna` | OpenAI model for every generation step |
+| `FINSAGE_DOC` | `AMD_2022_10K` | FinanceBench document the chatbot and experiments use |
+| `FINSAGE_RERANKER` | `llm` | `llm` grades candidates with the generator, `bge` uses local `bge-reranker-v2-m3` |
+| `FINSAGE_SOURCE` | `live` | `live` runs the real pipeline, `dev` serves the development fixture |
+| `FINSAGE_PORT` | `8000` | API port |
+
+`.env` does not override variables already set in the shell. If an `ANTHROPIC_BASE_URL` is inherited from another tool, the judge calls go to that endpoint instead, so unset it first (`env -u ANTHROPIC_BASE_URL ...`).
 
 ## Data
 
@@ -85,8 +97,22 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173. Until the live pipeline is wired (T4) the API serves a development fixture: every run is labeled "Dev fixture" in the UI and is never recorded. Live runs are recorded automatically to `recordings/` and can be replayed from "Recorded runs", which is the fallback for the classroom demo.
+Open http://localhost:5173. The API runs the live pipeline on `FINSAGE_DOC` (about 15 to 20 s and US$0.0014 per question). With `FINSAGE_SOURCE=dev` it serves a development fixture instead: every such run is labeled "Dev fixture" in the UI and is never recorded. Live runs are recorded automatically to `recordings/` and can be replayed from "Recorded runs", which is the fallback for the classroom demo.
 
 The event contract is `contracts/pipeline-events.schema.json`, generated from `backend/src/finsage_replica/domain/events.py` with `uv run python -m finsage_replica.domain.events`. The frontend mirror is `frontend/src/contracts/events.ts`.
 
-Tests: `uv run pytest` in `backend/`, `npm test` and `npm run typecheck` in `frontend/`. Each stage caches per document, so an interrupted run resumes. Chunk page indexes are 0-based, matching FinanceBench `evidence_page_num`.
+## Experiments
+
+Run from `backend/`. Model outputs are cached under `results/`, so a rerun pays only for what is missing.
+
+| Command | What it measures | Output |
+|---|---|---|
+| `uv run python -m finsage_replica.evaluation.experiment_a` | Path ablation: evidence-page recall for dense, +BM25, +metadata, +HyDE, +expansion | `results/experiment_a/` |
+| `uv run python -m finsage_replica.evaluation.reranker_comparison` | `bge-reranker-v2-m3` vs the LLM grader on the same candidates | `results/reranker_comparison/` |
+| `uv run python -m finsage_replica.evaluation.experiment_b` | B: FinSage vs naive dense RAG, same generator, graded by Claude Opus, plus cited-page hit. C: time and cost per stage | `results/experiment_b/` |
+
+Results on `AMD_2022_10K` (7 questions, anecdotal rather than a benchmark score): FinSage 7/7 correct vs naive RAG 3.5/7, the cited page is an evidence page in 6/7 vs 1/7, and FinSage takes 20.4 s vs 3.1 s per question.
+
+## Tests
+
+`uv run pytest` in `backend/`, `npm test` and `npm run typecheck` in `frontend/`. Each stage caches per document, so an interrupted run resumes. Chunk page indexes are 0-based, matching FinanceBench `evidence_page_num`.
