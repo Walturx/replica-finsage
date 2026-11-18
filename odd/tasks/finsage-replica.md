@@ -68,3 +68,4 @@ Branch: `feat/finsage-replica` · Delivery strategy: `ask-on-risk` (local repo, 
   5. Update diagram boxes e1, e2, e3 (phase 6 Evaluación) to done with the real figures via `docs/diagramas/build_drawio.py`, then commit.
   6. README: document `FINSAGE_RERANKER`, the live default and experiment B.
   7. T7: Week 13 presentation material (slides in Spanish, no semicolons or dash punctuation, plain words, single document stated without reasons) and the demo plan (live backend plus labeled recordings). To start the demo: backend `uv run python -m finsage_replica.api` from `backend/`, frontend `npx vite --port 5173` from `frontend/`.
+  Engram mirror `odd/finsage-replica/tasks` pending: Engram resolved this session to the Drive proposal folder, not this repo, so nothing was written there. The task file in git is the source of truth.
