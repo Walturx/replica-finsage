@@ -195,7 +195,7 @@ a1 = p2.box(15, 60, 270, 170, step("Página 12 del PDF", "Sección de clientes d
 a2 = p2.box(310, 60, 340, 170, step("Fragmento AMD_2022_10K:11:0", "Sección: Customers<br>105 tokens, solo de la página 12<br><br><span style='color:#1F2328'>“One customer accounted for 16% of our consolidated net revenue for the year ended December 31, 2022.”</span>"), parent=a, status="done")
 a3 = p2.box(675, 60, 260, 170, step("Vector BGE-M3", "El fragmento se convierte en un vector de 1024 números que representa su significado."), parent=a, status="done")
 a4 = p2.box(960, 60, 280, 170, step("Sin duplicado", "No tiene copias casi iguales en el reporte, así que se conserva tal cual. Queda entre los 598 fragmentos finales."), parent=a, status="done")
-a5 = p2.box(1265, 60, 270, 170, step("Resumen de la sección", "Un modelo resume la sección Customers y ese resumen viaja como contexto pegado al fragmento."), parent=a, status="ready")
+a5 = p2.box(1265, 60, 270, 170, step("Resumen de la sección", "Un modelo resume la sección Customers y ese resumen viaja como contexto pegado al fragmento."), parent=a, status="done")
 a6 = p2.box(1560, 60, 300, 170, step("Tres índices", "El fragmento queda buscable por sus palabras, por su significado y por el resumen de su sección."), parent=a, status="todo")
 for x, y in [(a1, a2), (a2, a3), (a3, a4), (a4, a5), (a5, a6)]:
     p2.edge(x, y, exit=(1, 0.5), entry=(0, 0.5))
