@@ -7,8 +7,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Secrets
+# Secrets: any env file variant (.env, .env.txt, .env.local), never committed
 .env
+.env.*
+*.env
 
 # Frontend
 node_modules/
