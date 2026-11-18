@@ -45,7 +45,7 @@ API keys live in a `.env` file in the repository root, which is never committed:
 
 ```
 OPENAI_API_KEY=<your key>       # generator gpt-6-luna (rewriting, HyDE, summaries, reranking, answers)
-ANTHROPIC_API_KEY=<your key>    # experiment B judge claude-opus-5-5
+ANTHROPIC_API_KEY=<your key>    # judge claude-opus-5-5 (experiment B and the Judge tab); the chat works without it
 ```
 
 Optional settings, read from the environment or `.env`:
@@ -98,6 +98,8 @@ npm run dev
 ```
 
 Open http://localhost:5173. The API runs the live pipeline on `FINSAGE_DOC` (about 15 to 20 s and US$0.0014 per question). With `FINSAGE_SOURCE=dev` it serves a development fixture instead: every such run is labeled "Dev fixture" in the UI and is never recorded. Live runs are recorded automatically to `recordings/` and can be replayed from "Recorded runs", which is the fallback for the classroom demo.
+
+The **Judge · Claude Opus** tab grades FinSage live on the 7 benchmark questions: FinSage answers through `/api/chat`, then `POST /api/judge/grade` asks Claude Opus to compare the answer with the official FinanceBench answer (about US$0.01 per grade). Only benchmark questions can be graded, because only they have an official answer. The same tab shows the saved experiment B grades from `results/experiment_b/results.json` through `GET /api/judge`, at no cost.
 
 The event contract is `contracts/pipeline-events.schema.json`, generated from `backend/src/finsage_replica/domain/events.py` with `uv run python -m finsage_replica.domain.events`. The frontend mirror is `frontend/src/contracts/events.ts`.
 
