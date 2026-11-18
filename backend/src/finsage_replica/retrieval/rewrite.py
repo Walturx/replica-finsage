@@ -42,5 +42,5 @@ def rewrite_question(llm: LanguageModel, question: str, company: str, doc_title:
     turns = "\n".join(f"{role}: {text}" for role, text in (history or [])) or "(no previous turns)"
     prompt = (f"Company in scope: {company}\nDocument: {doc_title}\n\nConversation history:\n{turns}\n\n"
               f"User question: {question}")
-    completion = llm.complete(INSTRUCTIONS, prompt, max_output_tokens=400)
+    completion = llm.complete(INSTRUCTIONS, prompt, max_output_tokens=1500)  # room for reasoning tokens
     return parse_subquestions(completion.text, fallback=question), completion

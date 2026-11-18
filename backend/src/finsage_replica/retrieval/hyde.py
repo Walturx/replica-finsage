@@ -15,6 +15,11 @@ INSTRUCTIONS = (
 )
 
 
+# Reasoning models spend part of the output budget thinking before they write; 300 tokens left
+# 4 of 7 passages empty with gpt-6-luna, so the budget leaves room for both.
+MAX_OUTPUT_TOKENS = 1500
+
+
 def hypothetical_document(llm: LanguageModel, subquestion: str, company: str, doc_title: str) -> Completion:
     prompt = f"Company: {company}\nDocument: {doc_title}\n\nQuestion: {subquestion}"
-    return llm.complete(INSTRUCTIONS, prompt, max_output_tokens=300)
+    return llm.complete(INSTRUCTIONS, prompt, max_output_tokens=MAX_OUTPUT_TOKENS)

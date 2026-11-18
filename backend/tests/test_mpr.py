@@ -1,6 +1,6 @@
 import numpy as np
 
-from finsage_replica.evaluation.experiment_a import CONFIGS, aggregate
+from finsage_replica.evaluation.experiment_a import CONFIGS, aggregate, needs_generation
 from finsage_replica.retrieval.index import DocumentIndex, SectionMeta
 from finsage_replica.retrieval.mpr import MprConfig, MultiPathRetriever
 
@@ -74,6 +74,13 @@ def test_configs_mirror_the_rows_of_the_paper_table_1():
         "Dense (FAISS)", "Dense + Expansion", "Dense + BM25", "Dense + BM25 + Metadata", "Dense + HyDE", "FinSage (all paths + Expansion)"
     ]
     assert CONFIGS[-1].config.paths == ("dense", "bm25", "metadata", "hyde") and CONFIGS[-1].config.expand
+
+
+def test_cached_llm_outputs_with_an_empty_hyde_passage_are_generated_again():
+    assert needs_generation(None)
+    assert needs_generation({"subquestions": ["q"], "hyde": [""]})
+    assert needs_generation({"subquestions": ["q", "r"], "hyde": ["text"]})
+    assert not needs_generation({"subquestions": ["q"], "hyde": ["text"]})
 
 
 def test_aggregate_reports_recall_precision_and_size():

@@ -36,6 +36,14 @@ CONFIGS = [
 ]
 
 
+def needs_generation(entry: dict | None) -> bool:
+    """A cached LLM output is reusable only with one non-empty HyDE passage per sub-question."""
+    if not entry:
+        return True
+    hydes = entry.get("hyde", [])
+    return len(hydes) != len(entry.get("subquestions", [])) or any(not h.strip() for h in hydes)
+
+
 def aggregate(rows: list[dict]) -> dict:
     n = len(rows)
     hits = sum(1 for r in rows if r["hit"])
@@ -84,7 +92,7 @@ def main() -> None:
 
     cache_file = out_dir / "llm_outputs.json"
     cache = json.loads(cache_file.read_text(encoding="utf-8")) if cache_file.is_file() else {}
-    missing = [q for q in questions if q["id"] not in cache]
+    missing = [q for q in questions if needs_generation(cache.get(q["id"]))]
     if missing:
         load_dotenv(repo / ".env")
         llm = OpenAILanguageModel(args.model)
