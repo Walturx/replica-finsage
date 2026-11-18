@@ -1,0 +1,265 @@
+{
+  "summary": {
+    "bge-reranker-v2-m3 (generic cross-encoder)": {
+      "evidence_in_top5": 4,
+      "questions": 7,
+      "mean_precision_at_5": 0.21428571428571427
+    },
+    "gpt-6-luna (LLM grader)": {
+      "evidence_in_top5": 7,
+      "questions": 7,
+      "mean_precision_at_5": 0.2979591836734694
+    }
+  },
+  "rows": [
+    {
+      "id": "financebench_id_00222",
+      "question": "Does AMD have a reasonably healthy liquidity profile based on its quick ratio for FY22? If the quick ratio is not relevant to measure liquidity, please state that and explain why.",
+      "evidence_pages": [
+        55
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 32,
+          "evidence_in_top5": false,
+          "precision_at_5": 0.0,
+          "top5_pages": [
+            43,
+            93,
+            96,
+            106,
+            106
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 1,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.4,
+          "top5_pages": [
+            56,
+            56,
+            51,
+            51,
+            51
+          ]
+        }
+      },
+      "candidates": 39,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_00995",
+      "question": "What are the major products and services that AMD sells as of FY22?",
+      "evidence_pages": [
+        3
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 16,
+          "evidence_in_top5": false,
+          "precision_at_5": 0.0,
+          "top5_pages": [
+            60,
+            43,
+            44,
+            6,
+            12
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 2,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            60,
+            4,
+            6,
+            43,
+            6
+          ]
+        }
+      },
+      "candidates": 38,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_01198",
+      "question": "What drove revenue change as of the FY22 for AMD?",
+      "evidence_pages": [
+        42
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 2,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.6,
+          "top5_pages": [
+            52,
+            43,
+            43,
+            4,
+            43
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 1,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            43,
+            48,
+            49,
+            48,
+            49
+          ]
+        }
+      },
+      "candidates": 31,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_00917",
+      "question": "What drove operating margin change as of the FY22 for AMD? If operating margin is not a useful metric for a company like this, then please state that and explain why.",
+      "evidence_pages": [
+        42
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 1,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.5,
+          "top5_pages": [
+            52,
+            43,
+            43,
+            43,
+            5,
+            4
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 3,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2857142857142857,
+          "top5_pages": [
+            49,
+            50,
+            43,
+            43,
+            49,
+            73,
+            74
+          ]
+        }
+      },
+      "candidates": 50,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_01279",
+      "question": "Among operations, investing, and financing activities, which brought in the most (or lost the least) cash flow for AMD in FY22?",
+      "evidence_pages": [
+        57
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 5,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            51,
+            52,
+            52,
+            52,
+            58
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 5,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            51,
+            52,
+            52,
+            52,
+            58
+          ]
+        }
+      },
+      "candidates": 18,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_00563",
+      "question": "From FY21 to FY22, excluding Embedded, in which AMD reporting segment did sales proportionally increase the most?",
+      "evidence_pages": [
+        47
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 5,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            43,
+            49,
+            75,
+            43,
+            48
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 2,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.6,
+          "top5_pages": [
+            43,
+            48,
+            48,
+            49,
+            48
+          ]
+        }
+      },
+      "candidates": 34,
+      "candidates_cover_evidence": true
+    },
+    {
+      "id": "financebench_id_00757",
+      "question": "Did AMD report customer concentration in FY22?",
+      "evidence_pages": [
+        11
+      ],
+      "by_reranker": {
+        "bge-reranker-v2-m3 (generic cross-encoder)": {
+          "first_evidence_rank": 6,
+          "evidence_in_top5": false,
+          "precision_at_5": 0.0,
+          "top5_pages": [
+            43,
+            5,
+            43,
+            106,
+            106
+          ]
+        },
+        "gpt-6-luna (LLM grader)": {
+          "first_evidence_rank": 1,
+          "evidence_in_top5": true,
+          "precision_at_5": 0.2,
+          "top5_pages": [
+            12,
+            69,
+            11,
+            5,
+            43
+          ]
+        }
+      },
+      "candidates": 37,
+      "candidates_cover_evidence": true
+    }
+  ],
+  "llm_cost_usd": 0.006673100000000001
+}

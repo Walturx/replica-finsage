@@ -151,14 +151,14 @@ m5 = p1.box(15, 620, 390, 140, step("Paper frente a réplica", "HyDE en el paper
 
 # Phase 3: DRR
 r = p1.lane(1140, 120, 260, 560, "3. DRR: reordenamiento", "drr")
-r1 = p1.box(15, 60, 230, 170, step("3.1 Reranker", "Un segundo modelo lee cada candidato junto a la pregunta y los ordena por relevancia real, no solo por parecido.", figure="Top 5 por subpregunta"), parent=r, status="todo")
-r2 = p1.box(15, 255, 230, 140, step("Paper frente a réplica", "El paper entrena su reranker con DPO. La réplica usa bge-reranker-v2-m3 ya entrenado, porque el modelo del paper no se publicó."), parent=r, status="done", fill="#FFFFFF", stroke="#C9CDD3", dashed=True)
+r1 = p1.box(15, 60, 230, 170, step("3.1 Reranker", "Un segundo modelo lee cada candidato junto a la pregunta y los ordena por relevancia real, no solo por parecido.", figure="Top 5 por subpregunta", note="Réplica: gpt-6-luna califica cada candidato"), parent=r, status="done")
+r2 = p1.box(15, 255, 230, 140, step("Paper frente a réplica", "El paper entrena su reranker con DPO y no lo publicó. Un reranker genérico (bge-reranker-v2-m3) conservó la evidencia en 4 de 7 preguntas. La réplica usa gpt-6-luna como calificador y la conservó en 7 de 7."), parent=r, status="done", fill="#FFFFFF", stroke="#C9CDD3", dashed=True)
 p1.edge(m4, r1, exit=(1, 0.5), entry=(0, 0.5))
 
 # Phase 4: generation
 g = p1.lane(1430, 120, 260, 560, "4. Respuesta", "gen")
-g1 = p1.box(15, 60, 230, 150, step("4.1 Generación con cita", "El modelo responde usando solo los 5 fragmentos elegidos y cita la página de cada dato.", note="Modelo: gpt-6-luna"), parent=g, status="todo")
-g2 = p1.box(15, 235, 230, 110, step("4.2 Fusión", "Si hubo varias subpreguntas, sus respuestas se unen en una sola."), parent=g, status="todo")
+g1 = p1.box(15, 60, 230, 150, step("4.1 Generación con cita", "El modelo responde usando solo los 5 fragmentos elegidos y cita la página de cada dato.", note="Modelo: gpt-6-luna"), parent=g, status="done")
+g2 = p1.box(15, 235, 230, 110, step("4.2 Fusión", "Si hubo varias subpreguntas, sus respuestas se unen en una sola."), parent=g, status="done")
 p1.edge(r1, g1, exit=(1, 0.5), entry=(0, 0.5))
 p1.edge(g1, g2)
 
@@ -204,8 +204,8 @@ b = p2.lane(40, 420, 1880, 290, "Cuando llega la pregunta: RAG por cuatro vías"
 b1 = p2.box(15, 60, 250, 210, step("Pregunta", "<span style='color:#1F2328'>“Did AMD report customer concentration in FY22?”</span>"), parent=b, status="done")
 b2 = p2.box(290, 60, 260, 210, step("Reescritura", "Queda como una subpregunta completa, con empresa y año explícitos, lista para buscar."), parent=b, status="done")
 b3 = p2.box(575, 60, 310, 210, step("Cuatro vías", "<b>BM25</b> encuentra las palabras customer y revenue<br><b>Densa</b> encuentra el significado<br><b>Metadatos</b> encuentra la sección Customers<br><b>HyDE</b> imagina una respuesta y busca textos parecidos"), parent=b, status="done")
-b4 = p2.box(910, 60, 260, 210, step("Reranker", "Ordena los candidatos y el fragmento de la página 12 debería quedar primero entre los 5 elegidos."), parent=b, status="todo")
-b5 = p2.box(1195, 60, 320, 210, step("Respuesta con cita", "El modelo responde solo con esos 5 fragmentos y cita la página.<br><br><b>Respuesta esperada según FinanceBench</b><br><span style='color:#1F2328'>Sí, un cliente representó el 16% de los ingresos netos consolidados.</span><br>Evidencia: página 12"), parent=b, status="todo")
+b4 = p2.box(910, 60, 260, 210, step("Reranker", "gpt-6-luna califica los candidatos. El fragmento de la página 12 queda primero con puntaje 1.00."), parent=b, status="done")
+b5 = p2.box(1195, 60, 320, 210, step("Respuesta con cita", "El modelo responde solo con esos 5 fragmentos y cita la página.<br><br><b>Respuesta del sistema</b><br><span style='color:#1F2328'>Sí. En 2022 un cliente representó el 16% de los ingresos netos consolidados, con ventas del segmento Gaming.</span><br>Cita las páginas 12 y 69. Coincide con FinanceBench."), parent=b, status="done")
 b6 = p2.box(1540, 60, 320, 210, step("Chatbot", "La respuesta aparece en vivo. La cita es un botón que abre el PDF en la página 12, junto al extracto citado.<br><br>Así se puede comprobar con los propios ojos que el dato está en el documento."), parent=b, status="done")
 for x, y in [(b1, b2), (b2, b3), (b3, b4), (b4, b5), (b5, b6)]:
     p2.edge(x, y, exit=(1, 0.5), entry=(0, 0.5))
