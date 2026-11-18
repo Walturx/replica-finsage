@@ -172,9 +172,9 @@ p1.edge(g2, u1, exit=(1, 0.5), entry=(0, 0.5))
 
 # Phase 6: evaluation band
 e = p1.lane(1140, 710, 850, 370, "6. Evaluación (espejo de las tablas del paper)", "eval")
-e1 = p1.box(15, 60, 260, 200, step("A. Aporte de cada vía", "Se agrega una vía por vez: densa, luego BM25, metadatos, HyDE y expansión.", figure="Mide si la página de evidencia aparece entre lo encontrado", note="Tabla 1 del paper"), parent=e, status="done")
-e2 = p1.box(295, 60, 260, 200, step("B. FinSage frente a RAG simple", "Mismo modelo en los dos. Un juez de otra familia (Qwen local) decide si cada respuesta es correcta.", figure="Exactitud y acierto de la página citada", note="Tabla 2 del paper"), parent=e, status="todo")
-e3 = p1.box(575, 60, 260, 200, step("C. Tiempo y costo", "Segundos, tokens y dólares de cada etapa por pregunta.", note="Tabla 3 del paper"), parent=e, status="todo")
+e1 = p1.box(15, 60, 260, 200, step("A. Aporte de cada vía", "Se agrega una vía por vez: densa, luego BM25, metadatos, HyDE y expansión.", figure="Página de evidencia encontrada: solo densa 5 de 7, FinSage completo 7 de 7", note="Tabla 1 del paper"), parent=e, status="done")
+e2 = p1.box(295, 60, 260, 200, step("B. FinSage frente a RAG simple", "Mismo modelo en los dos. Un juez de otra familia (Claude Opus) decide si cada respuesta es correcta.", figure="FinSage 7 de 7 correctas, RAG simple 3.5 de 7. Cita la página de evidencia en 6 de 7 frente a 1 de 7", note="Tabla 2 del paper"), parent=e, status="done")
+e3 = p1.box(575, 60, 260, 200, step("C. Tiempo y costo", "Segundos, tokens y dólares de cada etapa por pregunta.", figure="FinSage 20.4 s y US$0.0014 por pregunta. RAG simple 3.1 s", note="Tabla 3 del paper"), parent=e, status="done")
 p1.text(15, 275, 820, 60, "Con 7 preguntas los resultados se leen pregunta por pregunta y se comparan con el paper de forma cualitativa.", size=11, color=MUTED, parent=e)
 p1.edge(g2, e2, dashed=True, exit=(0.5, 1), entry=(0.5, 0))
 
