@@ -17,6 +17,20 @@ def evidence_page_hit(retrieved: list[dict], evidence_pages: list[int]) -> bool:
     return any(_pages(c) & wanted for c in retrieved)
 
 
+def first_evidence_rank(ranked: list[dict], evidence_pages: list[int]) -> int | None:
+    """1-based position of the first chunk covering an evidence page, or None."""
+    wanted = set(evidence_pages)
+    for position, chunk in enumerate(ranked, 1):
+        if _pages(chunk) & wanted:
+            return position
+    return None
+
+
+def hits_at_k(ranked: list[dict], evidence_pages: list[int], k: int) -> bool:
+    rank = first_evidence_rank(ranked, evidence_pages)
+    return rank is not None and rank <= k
+
+
 def evidence_precision(retrieved: list[dict], evidence_pages: list[int]) -> float:
     """Share of retrieved chunks that cover an evidence page."""
     if not retrieved:

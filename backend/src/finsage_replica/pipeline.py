@@ -35,7 +35,7 @@ from finsage_replica.domain.events import (
 )
 from finsage_replica.ports.llm import Completion, LanguageModel, TextDelta
 from finsage_replica.ports.pipeline import Turn
-from finsage_replica.ports.text import Embedder, Reranker
+from finsage_replica.ports.text import Embedder, Reranker, ReportsUsage
 from finsage_replica.reranking.drr import rerank
 from finsage_replica.retrieval.hyde import hypothetical_document
 from finsage_replica.retrieval.index import DocumentIndex
@@ -107,6 +107,10 @@ class FinSagePipeline:
                                     hyde_text=hyde.text if path == "hyde" else None)
             candidates = [self.index.chunks[j] for j in result.retrieved]
             ranked = await timed("rerank", rerank, sub, candidates, self.reranker, self.top_k)
+            if isinstance(self.reranker, ReportsUsage):
+                rerank_usage = self.reranker.take_usage()
+                if rerank_usage:
+                    account(rerank_usage)
             tops.append([chunk for chunk, _ in ranked])
             yield Rerank(run_id=run_id, t_ms=t(), sub_question=i, top=[self._ref(c, s) for c, s in ranked])
 
