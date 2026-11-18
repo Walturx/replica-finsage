@@ -5,15 +5,26 @@ import type { Source } from "../contracts/events";
 import { ChatView } from "../features/chat/ChatView";
 import { useChat } from "../features/chat/useChat";
 import { useScope } from "../features/document/useScope";
+import { JudgeView } from "../features/judge/JudgeView";
+import { useJudge } from "../features/judge/useJudge";
 import { PdfPanel, type PdfTarget } from "../features/pdf-viewer/PdfPanel";
 import { useTheme } from "../shared/theme/useTheme";
 import { Wordmark } from "../shared/ui/Logo";
 import { Sidebar } from "./Sidebar";
 
+type Tab = "chat" | "judge";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "chat", label: "Chat" },
+  { id: "judge", label: "Judge · Claude Opus" },
+];
+
 export function App() {
   const chat = useChat();
+  const judge = useJudge();
   const scope = useScope();
   const theme = useTheme();
+  const [tab, setTab] = useState<Tab>("chat");
   const [pdf, setPdf] = useState<PdfTarget | null>(null);
   const [backend, setBackend] = useState<Source | "offline" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,9 +48,11 @@ export function App() {
       onNewChat={() => {
         chat.reset();
         setPdf(null);
+        setTab("chat");
         onClose?.();
       }}
       onAsk={(q) => {
+        setTab("chat");
         void chat.send(q);
         onClose?.();
       }}
@@ -48,6 +61,7 @@ export function App() {
         onClose?.();
       }}
       onReplay={(r) => {
+        setTab("chat");
         void chat.replay(r.run_id, r.question);
         onClose?.();
       }}
@@ -78,18 +92,55 @@ export function App() {
           </button>
           <Wordmark size={18} />
         </header>
-        <ChatView
-          turns={chat.turns}
-          busy={chat.busy}
-          docTitle={doc?.title}
-          examples={doc?.questions.slice(0, 4).map((q) => q.question) ?? []}
-          composerDisabled={offline}
-          composerNote={offline ? "The backend is offline. Start it with: uv run python -m finsage_replica.api" : undefined}
-          onSend={(text) => void chat.send(text)}
-          onStop={chat.stop}
-          onOpenCitation={setPdf}
-          onOpenChunk={setPdf}
-        />
+        <div role="tablist" aria-label="View" className="flex shrink-0 gap-1 border-b border-border px-4 sm:px-6">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              id={`tab-${t.id}`}
+              aria-selected={tab === t.id}
+              aria-controls={`panel-${t.id}`}
+              onClick={() => setTab(t.id)}
+              className={`-mb-px cursor-pointer border-b-2 px-3 py-2.5 text-[13px] transition-colors focus-visible:outline-2 focus-visible:outline-accent ${
+                tab === t.id ? "border-accent font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        {tab === "chat" ? (
+          <div role="tabpanel" id="panel-chat" aria-labelledby="tab-chat" className="flex min-h-0 flex-1 flex-col">
+            <ChatView
+              turns={chat.turns}
+              busy={chat.busy}
+              docTitle={doc?.title}
+              examples={doc?.questions.slice(0, 4).map((q) => q.question) ?? []}
+              composerDisabled={offline}
+              composerNote={offline ? "The backend is offline. Start it with: uv run python -m finsage_replica.api" : undefined}
+              onSend={(text) => void chat.send(text)}
+              onStop={chat.stop}
+              onOpenCitation={setPdf}
+              onOpenChunk={setPdf}
+            />
+          </div>
+        ) : (
+          <div role="tabpanel" id="panel-judge" aria-labelledby="tab-judge" className="flex min-h-0 flex-1 flex-col">
+            <JudgeView
+              overview={judge.overview}
+              selectedId={judge.selectedId}
+              phase={judge.phase}
+              turn={judge.turn}
+              grade={judge.grade}
+              error={judge.error}
+              onSelect={judge.select}
+              onRun={() => void judge.run()}
+              onOpenCitation={setPdf}
+              onOpenPage={(page_index) => doc && setPdf({ doc_name: doc.doc_name, page_index })}
+            />
+          </div>
+        )}
       </main>
 
       {pdf && (
