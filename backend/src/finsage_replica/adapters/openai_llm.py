@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from typing import Any
 
-from finsage_replica.ports.llm import Completion
+from finsage_replica.ports.llm import Completion, TextDelta
 
 # US$ per 1M tokens (input, output), standard tier, from developers.openai.com/api/docs/pricing on 2026-11-11.
 # Cached-input discounts are ignored, so reported costs are an upper bound.
@@ -44,6 +45,31 @@ class OpenAILanguageModel:
         tokens_in, tokens_out = response.usage.input_tokens, response.usage.output_tokens
         return Completion(
             text=(response.output_text or "").strip(),
+            tokens_in=tokens_in,
+            tokens_out=tokens_out,
+            model=self.model,
+            cost_usd=cost_usd(self.model, tokens_in, tokens_out),
+        )
+
+    def stream(self, instructions: str, prompt: str, max_output_tokens: int = 1500) -> Iterator[TextDelta | Completion]:
+        events = self._client.responses.create(
+            model=self.model,
+            instructions=instructions,
+            input=prompt,
+            max_output_tokens=max_output_tokens,
+            store=False,
+            stream=True,
+        )
+        parts: list[str] = []
+        tokens_in = tokens_out = 0
+        for event in events:
+            if event.type == "response.output_text.delta":
+                parts.append(event.delta)
+                yield TextDelta(event.delta)
+            elif event.type in ("response.completed", "response.incomplete"):
+                tokens_in, tokens_out = event.response.usage.input_tokens, event.response.usage.output_tokens
+        yield Completion(
+            text="".join(parts).strip(),
             tokens_in=tokens_in,
             tokens_out=tokens_out,
             model=self.model,
