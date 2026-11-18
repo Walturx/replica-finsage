@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Replication of FinSage (Wang et al., CIKM 2025) on FinanceBench open source."
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "anthropic>=2.10.0",
     "faiss-cpu>=1.16.0",
     "fastapi>=0.162.5",
     "openai>=3.49.0",
