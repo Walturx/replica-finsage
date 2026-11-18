@@ -1,0 +1,95 @@
+{
+  "financebench_id_00222": {
+    "question": "Does AMD have a reasonably healthy liquidity profile based on its quick ratio for FY22? If the quick ratio is not relevant to measure liquidity, please state that and explain why.",
+    "subquestions": [
+      "Does Advanced Micro Devices, Inc. (AMD) have a reasonably healthy liquidity profile based on its quick ratio for fiscal year 2022, and if the quick ratio is not a relevant measure of AMD’s liquidity, why not?"
+    ],
+    "hyde": [
+      "At December 31, 2022, AMD’s quick ratio was approximately 1.5, based on cash and cash equivalents, short-term investments and accounts receivable relative to current liabilities. This indicates that the Company had liquid assets in excess of its short-term obligations; however, the quick ratio is a supplemental measure and should be considered alongside the Company’s overall cash flows and capital resources."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 298,
+    "tokens_out": 720,
+    "cost_usd": 0.0003898
+  },
+  "financebench_id_00995": {
+    "question": "What are the major products and services that AMD sells as of FY22?",
+    "subquestions": [
+      "What major products and services did Advanced Micro Devices, Inc. (AMD) sell as of fiscal year 2022?"
+    ],
+    "hyde": [
+      "In fiscal year 2022, we sold x86 microprocessors, accelerated processing units, chipsets, discrete and professional graphics processing units, server and embedded processors, and semi-custom system-on-chip products. We also provided development services and technology, including products and technology for game consoles and adaptive computing markets."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 256,
+    "tokens_out": 337,
+    "cost_usd": 0.0001941
+  },
+  "financebench_id_01198": {
+    "question": "What drove revenue change as of the FY22 for AMD?",
+    "subquestions": [
+      "What factors drove AMD's revenue change during fiscal year 2022?"
+    ],
+    "hyde": [
+      "AMD’s revenue increased 44% to $23.6 billion in fiscal 2022, primarily reflecting higher revenue in the Data Center, Embedded and Gaming segments, partially offset by lower revenue in the Client segment. Data Center growth was driven by increased sales of EPYC server processors, while Embedded revenue increased primarily as a result of the Xilinx acquisition. Gaming revenue grew on higher semi-custom product sales, while Client revenue declined due to lower Ryzen processor sales."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 243,
+    "tokens_out": 447,
+    "cost_usd": 0.0002478
+  },
+  "financebench_id_00917": {
+    "question": "What drove operating margin change as of the FY22 for AMD? If operating margin is not a useful metric for a company like this, then please state that and explain why.",
+    "subquestions": [
+      "What factors drove the change in AMD’s operating margin in fiscal year 2022?",
+      "Is operating margin a useful metric for analyzing AMD in fiscal year 2022, and if not, why not?"
+    ],
+    "hyde": [
+      "AMD’s operating margin decreased to approximately 5% in fiscal 2022 from 22% in fiscal 2021, primarily reflecting higher operating expenses following the Xilinx acquisition, including acquired intangible-asset amortization and acquisition-related costs. The impact of these expenses was partially offset by higher revenue and gross profit.",
+      "GAAP operating margin was less useful for evaluating AMD’s underlying operating performance in fiscal 2022 because it included substantial acquisition-related intangible amortization and other costs associated with the Xilinx acquisition. AMD therefore also uses non-GAAP operating margin, which excludes these items and provides a more comparable view of ongoing operations."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 382,
+    "tokens_out": 1302,
+    "cost_usd": 0.0006892
+  },
+  "financebench_id_01279": {
+    "question": "Among operations, investing, and financing activities, which brought in the most (or lost the least) cash flow for AMD in FY22?",
+    "subquestions": [
+      "Among operating, investing, and financing activities, which activity generated the most cash or lost the least cash for AMD in fiscal year 2022?"
+    ],
+    "hyde": [
+      "Net cash provided by operating activities was $3.6 billion in fiscal 2022, representing the largest cash contribution among operating, investing and financing activities. Investing and financing activities used cash during the year."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 274,
+    "tokens_out": 360,
+    "cost_usd": 0.0002074
+  },
+  "financebench_id_00563": {
+    "question": "From FY21 to FY22, excluding Embedded, in which AMD reporting segment did sales proportionally increase the most?",
+    "subquestions": [
+      "From fiscal year 2021 to fiscal year 2022, excluding AMD’s Embedded segment, which AMD reporting segment had the greatest proportional increase in sales?"
+    ],
+    "hyde": [
+      "Excluding the Embedded segment, the Data Center segment had the greatest proportional increase in sales from fiscal 2021 to fiscal 2022. Data Center net revenue increased 63% to $6.0 billion, compared with $3.7 billion in the prior year."
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 271,
+    "tokens_out": 352,
+    "cost_usd": 0.0002031
+  },
+  "financebench_id_00757": {
+    "question": "Did AMD report customer concentration in FY22?",
+    "subquestions": [
+      "Did AMD report customer concentration in fiscal year 2022?"
+    ],
+    "hyde": [
+      "No customer accounted for 10% or more of AMD’s consolidated net revenue in fiscal year 2022. Accordingly, AMD did not report significant customer concentration for that year"
+    ],
+    "model": "gpt-6-luna",
+    "tokens_in": 238,
+    "tokens_out": 359,
+    "cost_usd": 0.0002033
+  }
+}

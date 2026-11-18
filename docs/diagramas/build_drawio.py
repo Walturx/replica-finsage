@@ -126,22 +126,22 @@ f2 = p1.box(15, 190, 330, 150, step("1.2 Fragmentación", "El texto se corta en 
 f3 = p1.box(15, 360, 330, 100, step("1.3 Vectores de significado", "Cada fragmento se convierte en un vector con BGE-M3, para buscar por significado y no solo por palabras."), parent=f, status="done")
 f4 = p1.box(15, 480, 330, 130, step("1.4 Quitar duplicados", "Si dos fragmentos son casi iguales (similitud de 0.98 o más) se queda el primero. El que queda recuerda en qué otras páginas estaba su copia.", figure="598 fragmentos"), parent=f, status="done")
 f5 = p1.box(15, 630, 330, 130, step("1.5 Resumen de cada sección", "Un modelo de lenguaje resume cada sección en dos oraciones y ese resumen se pega a todos sus fragmentos como contexto.", note="Modelo: gpt-6-luna", figure="261 secciones"), parent=f, status="done")
-f6 = p1.box(15, 780, 330, 160, step("1.6 Tres índices", "<b>Palabras</b>: BM25<br><b>Significado</b>: FAISS con los vectores<br><b>Resúmenes</b>: vectores de los resúmenes de sección"), parent=f, status="todo")
+f6 = p1.box(15, 780, 330, 160, step("1.6 Tres índices", "<b>Palabras</b>: BM25<br><b>Significado</b>: FAISS con los vectores<br><b>Resúmenes</b>: vectores de los resúmenes de sección"), parent=f, status="done")
 for a, b in [(f1, f2), (f2, f3), (f3, f4), (f4, f5), (f5, f6)]:
     p1.edge(a, b)
 p1.edge(d2, f1, exit=(1, 0.5), entry=(0, 0.5))
 
 # Phase 2: MPR
 m = p1.lane(690, 120, 420, 960, "2. MPR: búsqueda por cuatro vías (en cada pregunta)", "mpr")
-m1 = p1.box(15, 60, 390, 80, step("2.1 Pregunta en el chat", "La pregunta llega junto con el historial de la conversación."), parent=m, status="todo")
-m2 = p1.box(15, 160, 390, 100, step("2.2 Reescritura", "Un modelo de lenguaje divide la pregunta en subpreguntas completas, reemplaza pronombres y agrega el contexto del historial."), parent=m, status="todo")
+m1 = p1.box(15, 60, 390, 80, step("2.1 Pregunta en el chat", "La pregunta llega junto con el historial de la conversación."), parent=m, status="done")
+m2 = p1.box(15, 160, 390, 100, step("2.2 Reescritura", "Un modelo de lenguaje divide la pregunta en subpreguntas completas, reemplaza pronombres y agrega el contexto del historial."), parent=m, status="done")
 v_y, v_h, v_w = 285, 150, 88
-mb = p1.box(15, v_y, v_w, v_h, step("BM25", "Busca las palabras exactas"), parent=m, status="todo", size=10)
-md = p1.box(15 + 100, v_y, v_w, v_h, step("Densa", "Busca por significado con los vectores"), parent=m, status="todo", size=10)
-mm = p1.box(15 + 200, v_y, v_w, v_h, step("Metadatos", "Busca en los resúmenes de sección"), parent=m, status="todo", size=10)
-mh = p1.box(15 + 300, v_y, v_w, v_h, step("HyDE", "Inventa una respuesta posible y busca textos parecidos a ella"), parent=m, status="todo", size=10)
+mb = p1.box(15, v_y, v_w, v_h, step("BM25", "Busca las palabras exactas"), parent=m, status="done", size=10)
+md = p1.box(15 + 100, v_y, v_w, v_h, step("Densa", "Busca por significado con los vectores"), parent=m, status="done", size=10)
+mm = p1.box(15 + 200, v_y, v_w, v_h, step("Metadatos", "Busca en los resúmenes de sección"), parent=m, status="done", size=10)
+mh = p1.box(15 + 300, v_y, v_w, v_h, step("HyDE", "Inventa una respuesta posible y busca textos parecidos a ella"), parent=m, status="done", size=10)
 p1.text(15, 440, 390, 30, "Las cuatro vías corren en paralelo y cada una encuentra evidencia distinta", size=10, color=MUTED, align="center", parent=m)
-m4 = p1.box(15, 480, 390, 110, step("2.3 Unión y expansión", "Se juntan los hallazgos de las cuatro vías y cada fragmento suma a sus vecinos de página si son parecidos.", note="Umbral 0.85 y hasta 5 vecinos, como en el paper"), parent=m, status="todo")
+m4 = p1.box(15, 480, 390, 110, step("2.3 Unión y expansión", "Se juntan los hallazgos de las cuatro vías y cada fragmento suma a sus vecinos de página si son parecidos.", note="Umbral 0.85 y hasta 5 vecinos, como en el paper"), parent=m, status="done")
 p1.edge(m1, m2)
 for v in (mb, md, mm, mh):
     p1.edge(m2, v)
@@ -172,7 +172,7 @@ p1.edge(g2, u1, exit=(1, 0.5), entry=(0, 0.5))
 
 # Phase 6: evaluation band
 e = p1.lane(1140, 710, 850, 370, "6. Evaluación (espejo de las tablas del paper)", "eval")
-e1 = p1.box(15, 60, 260, 200, step("A. Aporte de cada vía", "Se agrega una vía por vez: densa, luego BM25, metadatos, HyDE y expansión.", figure="Mide si la página de evidencia aparece entre lo encontrado", note="Tabla 1 del paper"), parent=e, status="todo")
+e1 = p1.box(15, 60, 260, 200, step("A. Aporte de cada vía", "Se agrega una vía por vez: densa, luego BM25, metadatos, HyDE y expansión.", figure="Mide si la página de evidencia aparece entre lo encontrado", note="Tabla 1 del paper"), parent=e, status="done")
 e2 = p1.box(295, 60, 260, 200, step("B. FinSage frente a RAG simple", "Mismo modelo en los dos. Un juez de otra familia (Qwen local) decide si cada respuesta es correcta.", figure="Exactitud y acierto de la página citada", note="Tabla 2 del paper"), parent=e, status="todo")
 e3 = p1.box(575, 60, 260, 200, step("C. Tiempo y costo", "Segundos, tokens y dólares de cada etapa por pregunta.", note="Tabla 3 del paper"), parent=e, status="todo")
 p1.text(15, 275, 820, 60, "Con 7 preguntas los resultados se leen pregunta por pregunta y se comparan con el paper de forma cualitativa.", size=11, color=MUTED, parent=e)
@@ -196,14 +196,14 @@ a2 = p2.box(310, 60, 340, 170, step("Fragmento AMD_2022_10K:11:0", "Sección: Cu
 a3 = p2.box(675, 60, 260, 170, step("Vector BGE-M3", "El fragmento se convierte en un vector de 1024 números que representa su significado."), parent=a, status="done")
 a4 = p2.box(960, 60, 280, 170, step("Sin duplicado", "No tiene copias casi iguales en el reporte, así que se conserva tal cual. Queda entre los 598 fragmentos finales."), parent=a, status="done")
 a5 = p2.box(1265, 60, 270, 170, step("Resumen de la sección", "Un modelo resume la sección Customers y ese resumen viaja como contexto pegado al fragmento."), parent=a, status="done")
-a6 = p2.box(1560, 60, 300, 170, step("Tres índices", "El fragmento queda buscable por sus palabras, por su significado y por el resumen de su sección."), parent=a, status="todo")
+a6 = p2.box(1560, 60, 300, 170, step("Tres índices", "El fragmento queda buscable por sus palabras, por su significado y por el resumen de su sección."), parent=a, status="done")
 for x, y in [(a1, a2), (a2, a3), (a3, a4), (a4, a5), (a5, a6)]:
     p2.edge(x, y, exit=(1, 0.5), entry=(0, 0.5))
 
 b = p2.lane(40, 420, 1880, 290, "Cuando llega la pregunta: RAG por cuatro vías", "mpr")
-b1 = p2.box(15, 60, 250, 210, step("Pregunta", "<span style='color:#1F2328'>“Did AMD report customer concentration in FY22?”</span>"), parent=b, status="todo")
-b2 = p2.box(290, 60, 260, 210, step("Reescritura", "Queda como una subpregunta completa, con empresa y año explícitos, lista para buscar."), parent=b, status="todo")
-b3 = p2.box(575, 60, 310, 210, step("Cuatro vías", "<b>BM25</b> encuentra las palabras customer y revenue<br><b>Densa</b> encuentra el significado<br><b>Metadatos</b> encuentra la sección Customers<br><b>HyDE</b> imagina una respuesta y busca textos parecidos"), parent=b, status="todo")
+b1 = p2.box(15, 60, 250, 210, step("Pregunta", "<span style='color:#1F2328'>“Did AMD report customer concentration in FY22?”</span>"), parent=b, status="done")
+b2 = p2.box(290, 60, 260, 210, step("Reescritura", "Queda como una subpregunta completa, con empresa y año explícitos, lista para buscar."), parent=b, status="done")
+b3 = p2.box(575, 60, 310, 210, step("Cuatro vías", "<b>BM25</b> encuentra las palabras customer y revenue<br><b>Densa</b> encuentra el significado<br><b>Metadatos</b> encuentra la sección Customers<br><b>HyDE</b> imagina una respuesta y busca textos parecidos"), parent=b, status="done")
 b4 = p2.box(910, 60, 260, 210, step("Reranker", "Ordena los candidatos y el fragmento de la página 12 debería quedar primero entre los 5 elegidos."), parent=b, status="todo")
 b5 = p2.box(1195, 60, 320, 210, step("Respuesta con cita", "El modelo responde solo con esos 5 fragmentos y cita la página.<br><br><b>Respuesta esperada según FinanceBench</b><br><span style='color:#1F2328'>Sí, un cliente representó el 16% de los ingresos netos consolidados.</span><br>Evidencia: página 12"), parent=b, status="todo")
 b6 = p2.box(1540, 60, 320, 210, step("Chatbot", "La respuesta aparece en vivo. La cita es un botón que abre el PDF en la página 12, junto al extracto citado.<br><br>Así se puede comprobar con los propios ojos que el dato está en el documento."), parent=b, status="done")

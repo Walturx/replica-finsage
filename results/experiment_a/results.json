@@ -1,0 +1,1136 @@
+{
+  "doc": "AMD_2022_10K",
+  "model": "gpt-6-luna",
+  "configs": [
+    {
+      "name": "Dense (FAISS)",
+      "config": {
+        "paths": [
+          "dense"
+        ],
+        "expand": false,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 5,
+      "recall": 0.7142857142857143,
+      "precision": 0.13296703296703297,
+      "avg_retrieved": 10.428571428571429
+    },
+    {
+      "name": "Dense + Expansion",
+      "config": {
+        "paths": [
+          "dense"
+        ],
+        "expand": true,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 5,
+      "recall": 0.7142857142857143,
+      "precision": 0.12282003710575139,
+      "avg_retrieved": 11.285714285714286
+    },
+    {
+      "name": "Dense + BM25",
+      "config": {
+        "paths": [
+          "dense",
+          "bm25"
+        ],
+        "expand": false,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 6,
+      "recall": 0.8571428571428571,
+      "precision": 0.09633019199582668,
+      "avg_retrieved": 19.142857142857142
+    },
+    {
+      "name": "Dense + BM25 + Metadata",
+      "config": {
+        "paths": [
+          "dense",
+          "bm25",
+          "metadata"
+        ],
+        "expand": false,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 6,
+      "recall": 0.8571428571428571,
+      "precision": 0.08846970226217578,
+      "avg_retrieved": 22.0
+    },
+    {
+      "name": "Dense + HyDE",
+      "config": {
+        "paths": [
+          "dense",
+          "hyde"
+        ],
+        "expand": false,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 7,
+      "recall": 1.0,
+      "precision": 0.16297852474323063,
+      "avg_retrieved": 16.714285714285715
+    },
+    {
+      "name": "FinSage (all paths + Expansion)",
+      "config": {
+        "paths": [
+          "dense",
+          "bm25",
+          "metadata",
+          "hyde"
+        ],
+        "expand": true,
+        "k_per_path": 10,
+        "k_sections": 2,
+        "tau": 0.85,
+        "max_bundle": 5
+      },
+      "questions": 7,
+      "hits": 7,
+      "recall": 1.0,
+      "precision": 0.09607025271661244,
+      "avg_retrieved": 33.714285714285715
+    }
+  ],
+  "per_question": {
+    "Dense (FAISS)": [
+      {
+        "id": "financebench_id_00222",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 10,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          42,
+          92,
+          95,
+          100,
+          101,
+          103,
+          105
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.1,
+        "retrieved": 10,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          42,
+          43,
+          53,
+          59,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.4,
+        "retrieved": 10,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          23,
+          42,
+          47,
+          51
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.23076923076923078,
+        "retrieved": 13,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          42,
+          47,
+          48,
+          51,
+          66
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 10,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.1,
+        "retrieved": 10,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          66,
+          74
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.1,
+        "retrieved": 10,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          11,
+          23,
+          42,
+          59,
+          100,
+          101,
+          105
+        ]
+      }
+    ],
+    "Dense + Expansion": [
+      {
+        "id": "financebench_id_00222",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 12,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          42,
+          92,
+          95,
+          100,
+          101,
+          103,
+          104,
+          105
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.09090909090909091,
+        "retrieved": 11,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          42,
+          43,
+          53,
+          59,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.36363636363636365,
+        "retrieved": 11,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          23,
+          42,
+          47,
+          51
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.21428571428571427,
+        "retrieved": 14,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          42,
+          47,
+          48,
+          51,
+          66
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 10,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.1,
+        "retrieved": 10,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          66,
+          74
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.09090909090909091,
+        "retrieved": 11,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          11,
+          23,
+          42,
+          59,
+          100,
+          101,
+          105
+        ]
+      }
+    ],
+    "Dense + BM25": [
+      {
+        "id": "financebench_id_00222",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 19,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          42,
+          92,
+          95,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.05263157894736842,
+        "retrieved": 19,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          42,
+          43,
+          53,
+          59,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          110,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.21052631578947367,
+        "retrieved": 19,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          21,
+          23,
+          42,
+          47,
+          51,
+          73,
+          74,
+          98,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.11538461538461539,
+        "retrieved": 26,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          28,
+          31,
+          42,
+          45,
+          47,
+          48,
+          51,
+          66,
+          70,
+          73,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": true,
+        "precision": 0.17647058823529413,
+        "retrieved": 17,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          57,
+          58,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.06666666666666667,
+        "retrieved": 15,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          66,
+          68,
+          73,
+          74,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.05263157894736842,
+        "retrieved": 19,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          11,
+          23,
+          42,
+          59,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      }
+    ],
+    "Dense + BM25 + Metadata": [
+      {
+        "id": "financebench_id_00222",
+        "hit": false,
+        "precision": 0.0,
+        "retrieved": 24,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          17,
+          42,
+          50,
+          92,
+          95,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.043478260869565216,
+        "retrieved": 23,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          11,
+          42,
+          43,
+          53,
+          59,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          110,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.19047619047619047,
+        "retrieved": 21,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          13,
+          21,
+          23,
+          42,
+          47,
+          48,
+          51,
+          73,
+          74,
+          98,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.11538461538461539,
+        "retrieved": 26,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          28,
+          31,
+          42,
+          45,
+          47,
+          48,
+          51,
+          66,
+          70,
+          73,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": true,
+        "precision": 0.17647058823529413,
+        "retrieved": 17,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          57,
+          58,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.05,
+        "retrieved": 20,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          66,
+          67,
+          68,
+          73,
+          74,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.043478260869565216,
+        "retrieved": 23,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          10,
+          11,
+          23,
+          42,
+          59,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      }
+    ],
+    "Dense + HyDE": [
+      {
+        "id": "financebench_id_00222",
+        "hit": true,
+        "precision": 0.125,
+        "retrieved": 16,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          42,
+          50,
+          55,
+          73,
+          77,
+          92,
+          95,
+          100,
+          101,
+          103,
+          105
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.125,
+        "retrieved": 16,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          12,
+          42,
+          43,
+          47,
+          53,
+          59,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.26666666666666666,
+        "retrieved": 15,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          11,
+          23,
+          42,
+          47,
+          48,
+          51
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.19047619047619047,
+        "retrieved": 21,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          35,
+          42,
+          47,
+          48,
+          49,
+          51,
+          66,
+          72,
+          73
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": true,
+        "precision": 0.14285714285714285,
+        "retrieved": 14,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          57,
+          88,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.23529411764705882,
+        "retrieved": 17,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          49,
+          51,
+          66,
+          74
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.05555555555555555,
+        "retrieved": 18,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          42,
+          47,
+          59,
+          68,
+          92,
+          100,
+          101,
+          105
+        ]
+      }
+    ],
+    "FinSage (all paths + Expansion)": [
+      {
+        "id": "financebench_id_00222",
+        "hit": true,
+        "precision": 0.07692307692307693,
+        "retrieved": 39,
+        "evidence_pages": [
+          55
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          17,
+          42,
+          50,
+          55,
+          73,
+          77,
+          92,
+          95,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_00995",
+        "hit": true,
+        "precision": 0.05263157894736842,
+        "retrieved": 38,
+        "evidence_pages": [
+          3
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          11,
+          12,
+          42,
+          43,
+          47,
+          53,
+          59,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          110,
+          111
+        ]
+      },
+      {
+        "id": "financebench_id_01198",
+        "hit": true,
+        "precision": 0.12903225806451613,
+        "retrieved": 31,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          13,
+          21,
+          23,
+          42,
+          47,
+          48,
+          51,
+          73,
+          74,
+          98,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00917",
+        "hit": true,
+        "precision": 0.10256410256410256,
+        "retrieved": 39,
+        "evidence_pages": [
+          42
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          11,
+          23,
+          28,
+          31,
+          35,
+          42,
+          45,
+          47,
+          48,
+          49,
+          51,
+          66,
+          70,
+          72,
+          73,
+          101,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_01279",
+        "hit": true,
+        "precision": 0.16666666666666666,
+        "retrieved": 18,
+        "evidence_pages": [
+          57
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          50,
+          51,
+          57,
+          58,
+          88,
+          100
+        ]
+      },
+      {
+        "id": "financebench_id_00563",
+        "hit": true,
+        "precision": 0.11764705882352941,
+        "retrieved": 34,
+        "evidence_pages": [
+          47
+        ],
+        "pages_retrieved": [
+          4,
+          5,
+          42,
+          47,
+          48,
+          49,
+          51,
+          66,
+          67,
+          68,
+          73,
+          74,
+          102,
+          103
+        ]
+      },
+      {
+        "id": "financebench_id_00757",
+        "hit": true,
+        "precision": 0.02702702702702703,
+        "retrieved": 37,
+        "evidence_pages": [
+          11
+        ],
+        "pages_retrieved": [
+          3,
+          4,
+          5,
+          10,
+          11,
+          23,
+          42,
+          47,
+          59,
+          68,
+          92,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      }
+    ]
+  },
+  "path_hits": {
+    "financebench_id_00222": {
+      "dense": false,
+      "bm25": false,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_00995": {
+      "dense": true,
+      "bm25": false,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_01198": {
+      "dense": true,
+      "bm25": false,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_00917": {
+      "dense": true,
+      "bm25": true,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_01279": {
+      "dense": false,
+      "bm25": true,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_00563": {
+      "dense": true,
+      "bm25": true,
+      "metadata": false,
+      "hyde": true
+    },
+    "financebench_id_00757": {
+      "dense": true,
+      "bm25": false,
+      "metadata": true,
+      "hyde": true
+    }
+  },
+  "llm_cost_usd": 0.0021347
+}
